@@ -60,4 +60,10 @@ export default {
       validation: (Rule) => Rule.unique(),
     },
   ],
+  preview: {
+    select: {
+      title: 'username',
+      subtitle: 'userid',
+    },
+  },
 }
