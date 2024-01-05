@@ -2,7 +2,7 @@
 
 // SideBar에서 활용하기위한 간단한 user데이터를 정의
 
-export type SimpleUser = {
+export type User = {
   username: string;
   email: string;
   image?: string;

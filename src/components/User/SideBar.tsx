@@ -1,4 +1,4 @@
-import { SimpleUser } from '@/model/user';
+import { User } from '@/model/user';
 import Avatar from '../Avatar/Avatar';
 
 // SideBar은 정적인 데이터를 보여주는 페이지이다.
@@ -9,21 +9,27 @@ import Avatar from '../Avatar/Avatar';
 
 type Props = {
   // 모델 타입을 정의
-  user: SimpleUser;
+  user: User;
 };
 
-export default function SideBar({ user: { username, email, image } }: Props) {
+export default function SideBar({
+  user: { username, email, image, userid },
+}: Props) {
   return (
-    <>
-      <div>
+    <section className="flex flex-col gap-4">
+      <div className="flex items-center">
         {image && <Avatar image={image} />}
-        <div>
-          <p>{email}</p>
-          <p>{username}</p>
+        <div className="ml-4">
+          <p className="font-bold">{userid}</p>
+          <p className="text-lg text-neutral-500 leading-4">{username}</p>
         </div>
       </div>
-      <p>About • Help • API • jobs • Privacy • Terms • Location • Language</p>
-      <p>© 2023 Jaewoong Jeong. All Rights Reserved.</p>
-    </>
+      <p className="text-sm text-neutral-500 mt-8">
+        About • Help • API • jobs • Privacy • Terms • Location • Language
+      </p>
+      <p className="text-sm font-bold text-neutral-500 mt-8">
+        © 2023 Jaewoong Jeong. All Rights Reserved.
+      </p>
+    </section>
   );
 }
