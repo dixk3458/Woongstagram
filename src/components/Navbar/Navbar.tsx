@@ -10,6 +10,7 @@ import NewFillIcon from '../UI/Icons/NewFillIcon';
 import { usePathname } from 'next/navigation';
 import ColorButton from '../UI/Button/ColorButton';
 import { signIn, signOut, useSession } from 'next-auth/react';
+import Avatar from '../Avatar/Avatar';
 
 const links = [
   {
@@ -48,12 +49,21 @@ export default function Navbar() {
               <Link href={href}>{href === pathname ? clickedIcon : icon}</Link>
             </li>
           ))}
-          {session ? ( //세션 정보가 있으면 signOut()호출
-            <ColorButton text="Sign out" onClick={() => signOut()} />
-          ) : (
-            //세션 정보가 없으면 signIn()호출
-            <ColorButton text="Sign in" onClick={() => signIn()} />
+          {user && (
+            <li>
+              <Link href={`/user/${user.userid}`}>
+                <Avatar image={user.image} />
+              </Link>
+            </li>
           )}
+          <li>
+            {session ? ( //세션 정보가 있으면 signOut()호출
+              <ColorButton text="Sign out" onClick={() => signOut()} />
+            ) : (
+              //세션 정보가 없으면 signIn()호출
+              <ColorButton text="Sign in" onClick={() => signIn()} />
+            )}
+          </li>
         </ul>
       </nav>
     </div>

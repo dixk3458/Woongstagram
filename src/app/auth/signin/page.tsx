@@ -26,7 +26,7 @@ export default async function SignInPage({
   // 따로 정의해주자.
 
   return (
-    <section className="flex flex-col items-center  mt-[15%]">
+    <section className="flex flex-col items-center  mt-24">
       <SignInButton providers={providers} callbackUrl={callbackUrl ?? '/'} />
     </section>
   );

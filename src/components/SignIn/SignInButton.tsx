@@ -20,7 +20,7 @@ export default function SignInButton({ providers, callbackUrl }: Props) {
         <li key={name}>
           <ColorButton
             text={`${name} 계정으로 로그인`}
-            onClick={() => signIn(id, { callbackUrl })}
+            onClick={() => signIn(id, { callbackUrl }, { prompt: 'login' })}
             size="large"
           />
         </li>
