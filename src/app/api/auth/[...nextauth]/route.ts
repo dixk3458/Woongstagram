@@ -1,3 +1,4 @@
+import { addUser } from '@/service/user';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
@@ -17,6 +18,25 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
   },
   callbacks: {
+    async signIn({ user: { id, name, email, image } }) {
+      // 서버에서 로그인에 성공하면 user:{id,name,email,image}를 준다.
+      // 이 데이터를 이용해 Sanity에 저장해야한다.
+      // 하지만 userid가 없기에 조작을해줘야한다.
+
+      if (!email) {
+        return false;
+      }
+
+      addUser({
+        // id는 계정의 고유한 id이다.
+        id: id,
+        userid: email.split('@')[0],
+        name: name || '',
+        email: email,
+        image: image,
+      });
+      return true;
+    },
     async session({ session, token }) {
       const user = session?.user;
       // Sanity에 필요한 userid 값을 추가해줄것이다.
