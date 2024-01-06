@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/Navbar/Navbar';
-import AuthContext from '../../Authcontext';
+import AuthContext from '@/context/Authcontext';
+import SWRConfigContext from '@/context/SWRConfigContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -26,7 +27,7 @@ export default function RootLayout({
             </div>
           </header>
           <main className="w-full flex justify-center pt-4 max-w-screen-xl mx-auto">
-            {children}
+            <SWRConfigContext>{children}</SWRConfigContext>
           </main>
         </AuthContext>
       </body>
