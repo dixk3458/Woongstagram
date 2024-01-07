@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { PropagateLoader } from 'react-spinners';
 import useSWR from 'swr';
 import Avatar from '../Avatar/Avatar';
+import ScrollableBar from '../UI/Carousel/ScrollableBar';
 
 // FollowingBar는 로그인한 사용자의 Following 데이터를 보여주면된다.
 // 사용자가 로그인에 성공했으면 서버측에서 사용자에 대한 페이지를 렌더링해서 주는데
@@ -57,21 +58,20 @@ export default function FollowingBar() {
         )
       )}
       {followingUsers && followingUsers.length > 0 && (
-        <ul className="w-full flex gap-2 overflow-auto">
+        <ScrollableBar>
           {followingUsers.map(({ userid, image }) => (
-            <li key={userid}>
-              <Link
-                className="flex flex-col justify-center items-center w-20"
-                href={`/user/${userid}`}
-              >
-                <Avatar image={image} highlight />
-                <p className="w-full text-sm text-center text-ellipsis overflow-hidden">
-                  {userid}
-                </p>
-              </Link>
-            </li>
+            <Link
+              key={userid}
+              className="flex flex-col justify-center items-center w-20"
+              href={`/user/${userid}`}
+            >
+              <Avatar image={image} highlight />
+              <p className="w-full text-sm text-center text-ellipsis overflow-hidden">
+                {userid}
+              </p>
+            </Link>
           ))}
-        </ul>
+        </ScrollableBar>
       )}
     </section>
   );
