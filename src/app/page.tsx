@@ -18,12 +18,12 @@ export default async function HomePage() {
   // user가 있을경우에 실행
 
   return (
-    <section className="flex flex-col  max-w-[850px] p-4 md:flex-row ">
-      <div className="w-full basis-3/4">
+    <section className="flex flex-col md:flex-row w-full max-w-[850px]">
+      <div className="w-full basis-3/4 min-w-0">
         <FollowingBar />
         <PostList />
       </div>
-      <div className="basis-1/4">
+      <div className="basis-1/4 ml-8">
         <SideBar
           user={{
             username: user.name,

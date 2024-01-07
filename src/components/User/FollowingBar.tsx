@@ -33,11 +33,22 @@ export default function FollowingBar() {
   // useSWR의 return 타입이 any이기때문에 data가 불명확하다.
   // 타입의 안정성을 더해주기위해 새로운 type을 정의해보자.
 
-  const followingUsers = user?.following;
+  const followingUsers = user?.following && [
+    ...user?.following,
+    ...user?.following,
+    ...user?.following,
+    ...user?.following,
+    ...user?.following,
+    ...user?.following,
+    ...user?.following,
+    ...user?.following,
+    ...user?.following,
+    ...user?.following,
+  ];
   //
 
   return (
-    <section>
+    <section className="w-full flex justify-center items-center p-4 shadow-sm shadow-neutral-300 mb-4 min-h-[90px] rounded-lg overflow-x-auto relative z-0">
       {loading ? (
         <PropagateLoader size={15} color="#F63D38" />
       ) : (
@@ -46,12 +57,17 @@ export default function FollowingBar() {
         )
       )}
       {followingUsers && followingUsers.length > 0 && (
-        <ul>
+        <ul className="w-full flex gap-2 overflow-auto">
           {followingUsers.map(({ userid, image }) => (
             <li key={userid}>
-              <Link href={`/user/${userid}`}>
+              <Link
+                className="flex flex-col justify-center items-center w-20"
+                href={`/user/${userid}`}
+              >
                 <Avatar image={image} highlight />
-                <p>{userid}</p>
+                <p className="w-full text-sm text-center text-ellipsis overflow-hidden">
+                  {userid}
+                </p>
               </Link>
             </li>
           ))}

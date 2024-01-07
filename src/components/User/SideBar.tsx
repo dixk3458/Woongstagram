@@ -16,7 +16,7 @@ export default function SideBar({
   user: { username, email, image, userid },
 }: Props) {
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col gap-4 ">
       <div className="flex items-center">
         {image && <Avatar image={image} />}
         <div className="ml-4">
