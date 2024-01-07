@@ -1,6 +1,10 @@
 'use client';
 
+import { DetailUser } from '@/model/user';
+import Link from 'next/link';
+import { PropagateLoader } from 'react-spinners';
 import useSWR from 'swr';
+import Avatar from '../Avatar/Avatar';
 
 // FollowingBar는 로그인한 사용자의 Following 데이터를 보여주면된다.
 // 사용자가 로그인에 성공했으면 서버측에서 사용자에 대한 페이지를 렌더링해서 주는데
@@ -21,8 +25,38 @@ export default function FollowingBar() {
   // 3. 백엔드에서 사용자의 상세 정보를 Sanity에서 가지고 옴(following)
   // 4 클라이언트 컴포넌트에서 UI를 보여줌
 
-  const { data, isLoading, error } = useSWR('/api/me');
-  console.log(data);
+  const {
+    data: user,
+    isLoading: loading,
+    error,
+  } = useSWR<DetailUser>('/api/me');
+  // useSWR의 return 타입이 any이기때문에 data가 불명확하다.
+  // 타입의 안정성을 더해주기위해 새로운 type을 정의해보자.
 
-  return <p>FollowingBar</p>;
+  const followingUsers = user?.following;
+  //
+
+  return (
+    <section>
+      {loading ? (
+        <PropagateLoader size={15} color="#F63D38" />
+      ) : (
+        (!followingUsers || followingUsers.length === 0) && (
+          <p>You don't have following</p>
+        )
+      )}
+      {followingUsers && followingUsers.length > 0 && (
+        <ul>
+          {followingUsers.map(({ userid, image }) => (
+            <li key={userid}>
+              <Link href={`/user/${userid}`}>
+                <Avatar image={image} highlight />
+                <p>{userid}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
 }
