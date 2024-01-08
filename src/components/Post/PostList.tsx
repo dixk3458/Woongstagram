@@ -1,7 +1,9 @@
 'use client';
 
 import { SimplePost } from '@/model/post';
+import { GridLoader } from 'react-spinners';
 import useSWR from 'swr';
+import PostListCard from './PostListCard';
 
 export default function PostList() {
   // 1. 내가 following 하고있는 유저의 정보를 가져온다.
@@ -22,6 +24,23 @@ export default function PostList() {
     error,
   } = useSWR<SimplePost[]>('/api/post');
 
-  console.log(posts);
-  return <p>PostList</p>;
+  // 받아온 posts를 순회하면서 UI를 표시해주자.
+  return (
+    <section>
+      {loading && (
+        <div>
+          <GridLoader color="#F63D38" />
+        </div>
+      )}
+      {posts && (
+        <ul>
+          {posts.map(post => (
+            <li key={post.id}>
+              <PostListCard post={post} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
 }

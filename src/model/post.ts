@@ -13,7 +13,6 @@ export type FullPost = {
   likes: string[];
   id: string;
   createdAt: string;
-  image: string;
 };
 
 export type SimplePost = Omit<FullPost, 'comments'> & {
