@@ -13,30 +13,43 @@ type Props = {
 export default function PostListCard({ post }: Props) {
   const { userimage, userid, photo, likes, text, createdAt } = post;
   return (
-    <>
-      <div>
-        <Avatar image={userimage} highlight />
-        <span>{userid}</span>
+    <article className="rounded-lg shadow-md border-gray-200">
+      <div className="flex items-center p-2">
+        <Avatar image={userimage} size="medium" highlight />
+        <span className="text-gray-700 font-bold ml-2">{userid}</span>
       </div>
-      <Image src={photo} alt={`photo by ${userid}`} width={500} height={500} />
-      <div>
+      <Image
+        className="w-full object-cover aspect-square"
+        src={photo}
+        alt={`photo by ${userid}`}
+        width={500}
+        height={500}
+      />
+      <div className="flex justify-between my-2 px-4">
         <HeartIcon />
         <BookMarkIcon />
       </div>
-      <div>
-        <p>{`${likes?.length ?? 0} ${likes?.length > 1 ? 'likes' : 'like'}`}</p>
-      </div>
-      <div>
+      <div className="px-4 py-1">
+        <p className="text-sm font-bold mb-2">{`${likes?.length ?? 0} ${
+          likes?.length > 1 ? 'likes' : 'like'
+        }`}</p>
         <p>
-          <span>{userid}</span>
+          <span className="font-bold mr-1">{userid}</span>
           {text}
         </p>
-        <p>{formatDate(createdAt)}</p>
-        <form>
+        <p className="text-xs text-neutral-500 uppercase my-2">
+          {formatDate(createdAt)}
+        </p>
+        <form className="flex  items-center border-t border-neutral-300">
           <SmileIcon />
-          <input type="text" placeholder="Add a comment..." />
+          <input
+            className="w-full ml-2 p-3 border-none outline-none"
+            type="text"
+            placeholder="Add a comment..."
+          />
+          <button className='font-bold text-orange-500 ml-2'>Post</button>
         </form>
       </div>
-    </>
+    </article>
   );
 }
