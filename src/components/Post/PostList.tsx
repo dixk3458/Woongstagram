@@ -4,6 +4,7 @@ import { SimplePost } from '@/model/post';
 import { GridLoader } from 'react-spinners';
 import useSWR from 'swr';
 import PostListCard from './PostListCard';
+import GridSpinner from '../UI/Spinner/GridSpinner';
 
 export default function PostList() {
   // 1. 내가 following 하고있는 유저의 정보를 가져온다.
@@ -28,15 +29,18 @@ export default function PostList() {
   return (
     <section>
       {loading && (
-        <div className='text-center mt-32'>
-          <GridLoader color="#F63D38" />
+        <div className="text-center mt-32">
+          {/* GridLoader를 바로 사용하는것이 아니라, 우리가 만들어둔 GridSpinner를 사용해
+            미리 페이지를 만드는것이 아니라, lazy하게 dynamic하게 import 할수있도록하자.
+           */}
+          <GridSpinner color="#F63D38" />
         </div>
       )}
       {posts && (
         <ul>
-          {posts.map(post => (
+          {posts.map((post, index) => (
             <li key={post.id} className="mb-4">
-              <PostListCard post={post} />
+              <PostListCard post={post} priority={index < 2} />
             </li>
           ))}
         </ul>
