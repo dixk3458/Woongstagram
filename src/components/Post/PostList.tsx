@@ -1,5 +1,6 @@
 'use client';
 
+import { SimplePost } from '@/model/post';
 import useSWR from 'swr';
 
 export default function PostList() {
@@ -14,8 +15,13 @@ export default function PostList() {
   // 나의 id를 전달할 이유가 없다.
   // 서버측에서 session 데이터를 이용해 해결하자.
 
-  const { data, isLoading, error } = useSWR('/api/post');
-  console.log(data);
+  // Promise로 받아오는 타입을 명시해서 안정성을 높이자.
+  const {
+    data: posts,
+    isLoading: loading,
+    error,
+  } = useSWR<SimplePost[]>('/api/post');
 
+  console.log(posts);
   return <p>PostList</p>;
 }

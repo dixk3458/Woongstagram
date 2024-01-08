@@ -1,3 +1,5 @@
+import { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import imageUrlBuilder from '@sanity/image-url';
 import { createClient } from '@sanity/client';
 
 export const client = createClient({
@@ -7,3 +9,9 @@ export const client = createClient({
   apiVersion: '2024-01-05', // use current date (YYYY-MM-DD) to target the latest API version
   token: process.env.SANITY_SECRET_TOKEN, // Only if you want to update content with the client
 });
+
+const builder = imageUrlBuilder(client);
+
+export function urlFor(source: SanityImageSource) {
+  return builder.image(source).width(800).url();
+}

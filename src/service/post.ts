@@ -1,4 +1,5 @@
-import { client } from './sanity';
+import { SimplePost } from '@/model/post';
+import { client, urlFor } from './sanity';
 
 const simplePostProjection = `
     ...,
@@ -21,9 +22,13 @@ export async function getFollowingPostsOf(userid: string) {
   // 자신 Post 가져오고
   // post중에 author 요소가 있는데, 그것은 user를 참조해
   // 내가 following 하는 배열에서 u
-  return client.fetch(
-    `*[_type == "post" && author->userid == "${userid}"
+  return client
+    .fetch(
+      `*[_type == "post" && author->userid == "${userid}"
         || author._ref in *[_type == "user" && userid == "${userid}"].following[]._ref]
         | order(_createdAt desc){${simplePostProjection}}`
-  );
+    )
+    .then(posts =>
+      posts.map((post: SimplePost) => ({ ...post, photo: urlFor(post.photo) }))
+    );
 }
