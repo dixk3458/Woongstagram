@@ -32,3 +32,20 @@ export async function getFollowingPostsOf(userid: string) {
       posts.map((post: SimplePost) => ({ ...post, photo: urlFor(post.photo) }))
     );
 }
+
+export async function getPostById(id: string) {
+  return client
+    .fetch(
+      `*[_type == "post" && _id == "${id}"][0]{
+    ...,
+    "userid":author->userid,
+    "userimage":author->image,
+    "photo":photo,
+    "likes":likes[]->userid,
+    "comments":comments[]{"comment":comment,"userid":author->userid,"userimage":author->image},
+    "id":_id,
+    "createdAt":_createdAt
+  }`
+    )
+    .then(post => ({ ...post, photo: urlFor(post.photo) }));
+}

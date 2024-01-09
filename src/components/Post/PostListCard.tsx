@@ -9,6 +9,7 @@ import ActionBar from './ActionBar';
 import { useState } from 'react';
 import Modal from '../Modal/Modal';
 import PostModal from './PostModal';
+import PostDetail from './PostDetail';
 
 type Props = {
   post: SimplePost;
@@ -53,7 +54,9 @@ export default function PostListCard({ post, priority = false }: Props) {
         // PostModal은 content를 portal에 이어주는 역할이다.
         <Modal>
           <PostModal onClose={() => setOpenModal(false)}>
-            <p>안녕</p>
+            {/* PostDetail UI를 보여줘야한다.
+            Props으로 post를 주면 PostDetail컴포넌트에서 그 post를 이용해 렌더링 */}
+            <PostDetail post={post} />
           </PostModal>
         </Modal>
       )}
