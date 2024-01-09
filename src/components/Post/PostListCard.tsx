@@ -10,6 +10,7 @@ import { useState } from 'react';
 import Modal from '../Modal/Modal';
 import PostModal from './PostModal';
 import PostDetail from './PostDetail';
+import PostUserAvatar from './PostUserAvatar';
 
 type Props = {
   post: SimplePost;
@@ -30,10 +31,7 @@ export default function PostListCard({ post, priority = false }: Props) {
 
   return (
     <article className="rounded-lg shadow-md border-gray-200">
-      <div className="flex items-center p-2">
-        <Avatar image={userimage} size="medium" highlight />
-        <span className="text-gray-700 font-bold ml-2">{userid}</span>
-      </div>
+      <PostUserAvatar userid={userid} userimage={userimage} />
       <Image
         onClick={() => setOpenModal(true)}
         className="w-full object-cover aspect-square"

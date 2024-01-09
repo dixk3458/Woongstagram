@@ -1,5 +1,10 @@
 import { FullPost, SimplePost } from '@/model/post';
+import Image from 'next/image';
 import useSWR from 'swr';
+import PostUserAvatar from './PostUserAvatar';
+import ActionBar from './ActionBar';
+import Avatar from '../Avatar/Avatar';
+import CommentForm from './CommentForm';
 
 type Props = {
   post: SimplePost;
@@ -17,5 +22,40 @@ export default function PostDetail({ post }: Props) {
   const { data } = useSWR<FullPost>(`/api/post/${id}`);
   const comments = data?.comments;
 
-  return <></>;
+  return (
+    <section>
+      <div className="relative">
+        <Image
+          src={photo}
+          alt={`photo by ${userid}`}
+          sizes="650px"
+          fill
+          priority
+        />
+      </div>
+      <div>
+        <PostUserAvatar userid={userid} userimage={userimage} />
+        <ul>
+          {comments &&
+            comments.map(
+              ({ userid: commentUserid, userimage, comment }, index) => (
+                <li key={index}>
+                  <Avatar
+                    image={userimage}
+                    size="small"
+                    highlight={commentUserid === userid}
+                  />
+                  <div>
+                    <span>{commentUserid}</span>
+                    <span>{comment}</span>
+                  </div>
+                </li>
+              )
+            )}
+        </ul>
+        <ActionBar userid={userid} createdAt={createdAt} likes={likes} />
+        <CommentForm/>
+      </div>
+    </section>
+  );
 }
