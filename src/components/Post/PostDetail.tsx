@@ -23,9 +23,10 @@ export default function PostDetail({ post }: Props) {
   const comments = data?.comments;
 
   return (
-    <section>
-      <div className="relative">
+    <section className="flex w-full h-full">
+      <div className="relative basis-3/5">
         <Image
+          className="object-cover"
           src={photo}
           alt={`photo by ${userid}`}
           sizes="650px"
@@ -33,20 +34,20 @@ export default function PostDetail({ post }: Props) {
           priority
         />
       </div>
-      <div>
+      <div className="flex flex-col basis-2/5">
         <PostUserAvatar userid={userid} userimage={userimage} />
-        <ul>
+        <ul className="h-full p-4 overflow-y-auto border-t border-gray-200 mb-1">
           {comments &&
             comments.map(
               ({ userid: commentUserid, userimage, comment }, index) => (
-                <li key={index}>
+                <li key={index} className="flex items-center mb-1">
                   <Avatar
                     image={userimage}
                     size="small"
                     highlight={commentUserid === userid}
                   />
-                  <div>
-                    <span>{commentUserid}</span>
+                  <div className="ml-2">
+                    <span className="font-bold mr-2">{commentUserid}</span>
                     <span>{comment}</span>
                   </div>
                 </li>
@@ -54,7 +55,7 @@ export default function PostDetail({ post }: Props) {
             )}
         </ul>
         <ActionBar userid={userid} createdAt={createdAt} likes={likes} />
-        <CommentForm/>
+        <CommentForm />
       </div>
     </section>
   );
