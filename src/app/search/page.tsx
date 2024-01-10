@@ -1,3 +1,8 @@
+import SearchUserBar from '@/components/Search/SearchUserBar';
+
 export default function SearchPage(){
-    return <>Search page</>
+    
+    return <>
+        <SearchUserBar/>
+    </>
 }
