@@ -22,15 +22,14 @@ export default function SearchUserBar() {
     error,
   } = useSWR<SearchedUser[]>(`/api/search/${keyword}`);
 
-  //
-
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
   };
   return (
-    <>
-      <form onSubmit={e => onSubmit(e)}>
+    <section className="w-full max-w-2xl my-4 flex flex-col items-center">
+      <form className="w-full mb-4" onSubmit={e => onSubmit(e)}>
         <input
+          className="w-full text-xl p-3 border border-gray-400 outline-none"
           type="text"
           autoFocus
           placeholder="Search for a userid or username"
@@ -39,11 +38,15 @@ export default function SearchUserBar() {
         />
       </form>
       {error && <p>에러가 발생했습니다. 다시 시도해주세요.😅</p>}
-      {loading && <GridSpinner />}
+      {loading && (
+        <div className="mt-[30px]">
+          <GridSpinner />
+        </div>
+      )}
       {!loading && !error && users?.length == 0 && (
         <p>사용자를 찾을 수 없습니다. 다시 시도해주세요. 😅</p>
       )}
-      <ul>
+      <ul className="w-full p-4">
         {users &&
           users.map(user => (
             <li key={user.userid}>
@@ -51,6 +54,6 @@ export default function SearchUserBar() {
             </li>
           ))}
       </ul>
-    </>
+    </section>
   );
 }
