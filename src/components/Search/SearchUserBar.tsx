@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { SearchedUser } from '@/model/user';
+import { FormEvent, useState } from 'react';
 import useSWR from 'swr';
+import GridSpinner from '../UI/Spinner/GridSpinner';
 
 export default function SearchUserBar() {
   // 사용자의 입력데이터를 이용해 서버에게 요청을해야한다.
@@ -13,6 +15,41 @@ export default function SearchUserBar() {
 
   const [keyword, setKeyword] = useState('');
 
-  const { data, isLoading, error } = useSWR(`/api/search/${keyword}`);
-  return <></>;
+  const {
+    data: users,
+    isLoading: loading,
+    error,
+  } = useSWR<SearchedUser[]>(`/api/search/${keyword}`);
+
+  //
+
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+  };
+  return (
+    <>
+      <form onSubmit={e => onSubmit(e)}>
+        <input
+          type="text"
+          autoFocus
+          placeholder="Search for a userid or username"
+          value={keyword}
+          onChange={event => setKeyword(event.target.value)}
+        />
+      </form>
+      {error && <p>에러가 발생했습니다. 다시 시도해주세요.😅</p>}
+      {loading && <GridSpinner />}
+      {!loading && !error && users?.length == 0 && (
+        <p>사용자를 찾을 수 없습니다. 다시 시도해주세요. 😅</p>
+      )}
+      <ul>
+        {users &&
+          users.map(user => (
+            <li key={user.userid}>
+              <p>{user.userid}</p>
+            </li>
+          ))}
+      </ul>
+    </>
+  );
 }
