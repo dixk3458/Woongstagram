@@ -4,6 +4,7 @@ import { SearchedUser } from '@/model/user';
 import { FormEvent, useState } from 'react';
 import useSWR from 'swr';
 import GridSpinner from '../UI/Spinner/GridSpinner';
+import UserCard from '../User/UserCard';
 
 export default function SearchUserBar() {
   // 사용자의 입력데이터를 이용해 서버에게 요청을해야한다.
@@ -46,7 +47,7 @@ export default function SearchUserBar() {
         {users &&
           users.map(user => (
             <li key={user.userid}>
-              <p>{user.userid}</p>
+              <UserCard user={user} />
             </li>
           ))}
       </ul>
