@@ -1,3 +1,4 @@
+import UserPosts from '@/components/User/UserPosts';
 import UserProfile from '@/components/User/UserProfile';
 import { getUserForProfile } from '@/service/user';
 import { notFound } from 'next/navigation';
@@ -31,6 +32,7 @@ export default async function UserPage({ params }: Props) {
   return (
     <>
       <UserProfile user={user} />
+      <UserPosts user={user} />
     </>
   );
 }
