@@ -5,6 +5,7 @@ import { FormEvent, useState } from 'react';
 import useSWR from 'swr';
 import GridSpinner from '../UI/Spinner/GridSpinner';
 import UserCard from '../User/UserCard';
+import useDebounce from '@/hook/useDebounce';
 
 export default function SearchUserBar() {
   // 사용자의 입력데이터를 이용해 서버에게 요청을해야한다.
@@ -16,11 +17,13 @@ export default function SearchUserBar() {
 
   const [keyword, setKeyword] = useState('');
 
+  const debouncedKeyword = useDebounce(keyword, 1000);
+
   const {
     data: users,
     isLoading: loading,
     error,
-  } = useSWR<SearchedUser[]>(`/api/search/${keyword}`);
+  } = useSWR<SearchedUser[]>(`/api/search/${debouncedKeyword}`);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
