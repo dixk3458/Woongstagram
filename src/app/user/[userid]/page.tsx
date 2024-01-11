@@ -30,9 +30,9 @@ export default async function UserPage({ params }: Props) {
   }
 
   return (
-    <>
+    <section className="w-full flex flex-col">
       <UserProfile user={user} />
       <UserPosts user={user} />
-    </>
+    </section>
   );
 }

@@ -1,6 +1,5 @@
 'use client';
 
-
 import { ProfileUser } from '@/model/user';
 import { useState } from 'react';
 import PostIcon from '../UI/Icons/PostIcon';
@@ -35,11 +34,15 @@ export default function UserPosts({ user }: Props) {
 
   return (
     <section>
-      <ul>
+      <ul className="flex justify-center items-center uppercase ">
         {tabs.map(({ type, icon }, index) => (
-          <li key={index} onClick={() => setQuery(type)}>
-            <button>{icon}</button>
-            <span>{type}</span>
+          <li
+            className={`flex items-center mx-12 py-4 cursor-pointer ${query === type && 'font-bold border-t border-black'}`}
+            key={index}
+            onClick={() => setQuery(type)}
+          >
+            <button className="scale-150 md:scale-100">{icon}</button>
+            <span className="hidden md:inline md:ml-1">{type}</span>
           </li>
         ))}
       </ul>
