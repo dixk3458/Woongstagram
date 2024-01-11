@@ -1,6 +1,6 @@
 'use client';
 
-import { DetailUser } from '@/model/user';
+import { HomeUser } from '@/model/user';
 import Link from 'next/link';
 import { PropagateLoader } from 'react-spinners';
 import useSWR from 'swr';
@@ -26,11 +26,7 @@ export default function FollowingBar() {
   // 3. 백엔드에서 사용자의 상세 정보를 Sanity에서 가지고 옴(following)
   // 4 클라이언트 컴포넌트에서 UI를 보여줌
 
-  const {
-    data: user,
-    isLoading: loading,
-    error,
-  } = useSWR<DetailUser>('/api/me');
+  const { data: user, isLoading: loading, error } = useSWR<HomeUser>('/api/me');
   // useSWR의 return 타입이 any이기때문에 data가 불명확하다.
   // 타입의 안정성을 더해주기위해 새로운 type을 정의해보자.
 
