@@ -23,7 +23,6 @@ export default async function UserPage({ params }: Props) {
   // userid가 동적으로 전달되는데 그것을 저장하자.
 
   const user = await getUserForProfile(params.userid);
-  console.log(user);
 
   if (!user) {
     notFound();

@@ -60,12 +60,16 @@ export async function searchUser(keyword?: string) {
     );
 }
 
+
+// 쿼리 요청을 할때 효율적인 방법을 고민하자.
+// 조인과 projection을 이용해 서버에 요청을 효율적으로 해 , 자원을 적게 사용할수있다.
 export async function getUserForProfile(userid: string) {
   return client
     .fetch(
       `*[_type == "user" && userid == "${userid}"][0]{
     ...,
     "id":_id,
+    "userimage":image,
     "following":count(following),
     "followers":count(followers),
     "posts":count(*[_type == "post" && author->userid == "${userid}"])
