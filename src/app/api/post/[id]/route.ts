@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
 import { NextRequest, NextResponse } from 'next/server';
 import { getPostById } from '@/service/post';
+import { authOptions } from '@/utils/authOptions';
 
 type Props = {
   params: { id: string };

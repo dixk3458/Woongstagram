@@ -8,12 +8,12 @@ export type AuthUser = {
   username: string;
   userid: string;
   email: string;
-  userimage?: string;
+  image?: string;
 };
 
 // User 타입에서 image와 userid를 뽑아 새로운 SimpleUser타입을 생성
 // 타입스크립트의 장점
-export type SimpleUser = Pick<AuthUser, 'userimage' | 'userid'>;
+export type SimpleUser = Pick<AuthUser, 'image' | 'userid'>;
 
 // 세션에서 관리되지 않는 following,followers...
 // 등의 User의 모든 데이터를 담는 타입

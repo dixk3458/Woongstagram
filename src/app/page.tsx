@@ -1,8 +1,8 @@
 import PostList from '@/components/Post/PostList';
 import FollowingBar from '@/components/User/FollowingBar';
 import SideBar from '@/components/User/SideBar';
+import { authOptions } from '@/utils/authOptions';
 import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]/route';
 import { redirect } from 'next/navigation';
 
 export default async function HomePage() {
@@ -29,7 +29,7 @@ export default async function HomePage() {
             username: user.name,
             userid: user.userid,
             email: user.email,
-            image: user.image,
+            image: user.userimage,
           }}
         />
       </div>

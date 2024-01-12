@@ -1,5 +1,6 @@
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import SignInButton from '@/components/SignIn/SignInButton';
+import { authOptions } from '@/utils/authOptions';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { getProviders, signIn } from 'next-auth/react';
 
@@ -7,6 +8,11 @@ type Props = {
   searchParams: {
     callbackUrl: string;
   };
+};
+
+export const metadata: Metadata = {
+  title: 'Signin',
+  description: 'Signin or Login to follow',
 };
 
 export default async function SignInPage({

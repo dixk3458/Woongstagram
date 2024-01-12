@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { authOptions } from '../auth/[...nextauth]/route';
 import { getUserByUserId } from '@/service/user';
+import { authOptions } from '@/utils/authOptions';
 
 export async function GET() {
   // 원래는 사용자가 요청할때 Request header에 있는 쿠키에 대한 데이터를

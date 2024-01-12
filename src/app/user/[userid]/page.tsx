@@ -1,11 +1,24 @@
 import UserPosts from '@/components/User/UserPosts';
 import UserProfile from '@/components/User/UserProfile';
 import { getUserForProfile } from '@/service/user';
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 
 type Props = {
   params: { userid: string };
 };
+
+const getUser = cache(async (userid: string) => getUserForProfile(userid));
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const user = await getUser(params.userid);
+
+  return {
+    title: `${user?.username} (@${user?.userid} • Woongstagram)`,
+    description: `${user?.username}'s all posts`,
+  };
+}
 
 export default async function UserPage({ params }: Props) {
   // 서버에서 미리 렌더링하기 어려운 페이지이다.
@@ -23,7 +36,7 @@ export default async function UserPage({ params }: Props) {
   // userid를 이용해 API Route를 할것이기에
   // userid가 동적으로 전달되는데 그것을 저장하자.
 
-  const user = await getUserForProfile(params.userid);
+  const user = await getUser(params.userid);
 
   if (!user) {
     notFound();

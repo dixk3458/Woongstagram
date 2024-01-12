@@ -1,8 +1,8 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route';
 import { NextResponse } from 'next/server';
 import { AuthUser } from '@/model/user';
 import { getFollowingPostsOf } from '@/service/post';
+import { authOptions } from '@/utils/authOptions';
 
 export async function GET() {
   // 서버측에서 요청을 받으면 먼저 유효성 검사를 해주자.

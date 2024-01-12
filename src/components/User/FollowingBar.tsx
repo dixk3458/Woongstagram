@@ -44,13 +44,14 @@ export default function FollowingBar() {
   ];
   //
 
+
   return (
     <section className="w-full flex justify-center items-center p-4 shadow-sm shadow-neutral-300 mb-4 min-h-[90px] rounded-lg overflow-x-auto relative z-0">
       {loading ? (
         <PropagateLoader size={15} color="#F63D38" />
       ) : (
         (!followingUsers || followingUsers.length === 0) && (
-          <p>You don't have following</p>
+          <p>{`You don't have following`}</p>
         )
       )}
       {followingUsers && followingUsers.length > 0 && (
