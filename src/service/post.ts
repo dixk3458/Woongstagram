@@ -86,7 +86,6 @@ function mapPosts(posts: SimplePost[]) {
 }
 
 export async function likePost(postid: string, usertokenid: string) {
-  console.log(usertokenid);
   return client
     .patch(postid)
     .setIfMissing({ likes: [] })
