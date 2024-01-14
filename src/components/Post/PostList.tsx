@@ -1,10 +1,8 @@
 'use client';
 
-import { SimplePost } from '@/model/post';
-import { GridLoader } from 'react-spinners';
-import useSWR from 'swr';
 import PostListCard from './PostListCard';
 import GridSpinner from '../UI/Spinner/GridSpinner';
+import usePosts from '@/hook/usePosts';
 
 export default function PostList() {
   // 1. 내가 following 하고있는 유저의 정보를 가져온다.
@@ -19,11 +17,7 @@ export default function PostList() {
   // 서버측에서 session 데이터를 이용해 해결하자.
 
   // Promise로 받아오는 타입을 명시해서 안정성을 높이자.
-  const {
-    data: posts,
-    isLoading: loading,
-    error,
-  } = useSWR<SimplePost[]>('/api/post');
+  const { posts, isLoading: loading, error } = usePosts();
 
   // 받아온 posts를 순회하면서 UI를 표시해주자.
   return (

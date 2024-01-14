@@ -8,6 +8,7 @@ import BookMarkFillIcon from '../UI/Icons/BookMarkFillIcon';
 import { SimplePost } from '@/model/post';
 import { getSession, useSession } from 'next-auth/react';
 import { useSWRConfig } from 'swr';
+import usePosts from '@/hook/usePosts';
 
 type Props = {
   post: SimplePost;
@@ -34,19 +35,17 @@ export default function ActionBar({ post }: Props) {
   const [bookmarked, setBookmarked] = useState(false);
 
   // 내부적으로 stale된 데이터를 사용하는것을 방지하도록
-  const { mutate } = useSWRConfig();
 
   // 나중에 클릭이 되면, handleLike()를 해줘
   // handleLike()는 boolean 타입을 인자로해서 그걸로 setLike하는거야
   // liked에는 toggeld로 전달된 값을 쓰면돼
+
+  const { setLike } = usePosts();
+
   const handleLike = (liked: boolean) => {
-    fetch('/api/like', {
-      method: 'PUT',
-      body: JSON.stringify({
-        postid: postid,
-        liked: liked,
-      }),
-    }).then(() => mutate('/api/post'));
+    if (user) {
+      setLike(post, user.usertokenid, liked);
+    }
   };
 
   return (
