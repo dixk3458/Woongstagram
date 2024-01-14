@@ -5,26 +5,56 @@ import formatDate from '@/utils/date';
 import ToggleButton from '../UI/Button/ToggleButton';
 import HeartFillIcon from '../UI/Icons/HeartFillIcon';
 import BookMarkFillIcon from '../UI/Icons/BookMarkFillIcon';
+import { SimplePost } from '@/model/post';
+import { getSession, useSession } from 'next-auth/react';
+import { useSWRConfig } from 'swr';
 
 type Props = {
-  likes: string[];
-  userid: string;
-  createdAt: string;
-  text?: string;
+  post: SimplePost;
 };
 
 // boolean값에 따라서 토글을 할수있는 ToggleButton 컴포넌트를 만들어 재사용해볼것이다.
 
-export default function ActionBar({ likes, userid, text, createdAt }: Props) {
-  const [liked, setLiked] = useState(false);
+export default function ActionBar({ post }: Props) {
+  const { id: postid, userid, likes, text, createdAt } = post;
+  // mount될때 false로 지정하지 말고
+  // post의 likes배열에 사용자의 Id가 있는지 없는지에 따라서 상태를 설정할것이다.
+  const { data: session } = useSession();
+  const user = session?.user;
+
+  // const [liked, setLiked] = useState(
+  //   user ? likes.includes(user.userid) : false
+  // );
+  // 컴포넌트 내부 상태에 의존해서 liked인지 아닌지를 결정하는것이아니라
+  // mutate로 매번 post를 받아오는데, 그 post의 likes 배열안에
+  // 사용자가 들어있는지에 따라서 결정
+
+  const liked = user ? likes.includes(user.userid) : false;
+
   const [bookmarked, setBookmarked] = useState(false);
+
+  // 내부적으로 stale된 데이터를 사용하는것을 방지하도록
+  const { mutate } = useSWRConfig();
+
+  // 나중에 클릭이 되면, handleLike()를 해줘
+  // handleLike()는 boolean 타입을 인자로해서 그걸로 setLike하는거야
+  // liked에는 toggeld로 전달된 값을 쓰면돼
+  const handleLike = (liked: boolean) => {
+    fetch('/api/like', {
+      method: 'PUT',
+      body: JSON.stringify({
+        postid: postid,
+        liked: liked,
+      }),
+    }).then(() => mutate('/api/post'));
+  };
 
   return (
     <>
       <div className="flex justify-between my-2 px-4">
         <ToggleButton
           toggled={liked}
-          onToggle={liked => setLiked(liked)}
+          onToggle={liked => handleLike(liked)}
           onIcon={<HeartFillIcon />}
           offIcon={<HeartIcon />}
         />

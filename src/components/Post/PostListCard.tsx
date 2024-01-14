@@ -41,12 +41,7 @@ export default function PostListCard({ post, priority = false }: Props) {
         height={500}
         priority={priority}
       />
-      <ActionBar
-        likes={likes}
-        userid={userid}
-        text={text}
-        createdAt={createdAt}
-      />
+      <ActionBar post={post} />
       <CommentForm />
       {openModal && (
         // PostModal은 content를 portal에 이어주는 역할이다.

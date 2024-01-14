@@ -50,8 +50,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         session.user = {
           ...user,
-          userid: user.email?.split('@')[0] || '',
           usertokenid: token.usertokenid as string,
+          userid: user.email?.split('@')[0] || '',
         };
       }
 

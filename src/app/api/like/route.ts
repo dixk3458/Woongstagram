@@ -1,4 +1,5 @@
 import { dislikePost, likePost } from '@/service/post';
+import { authOptions } from '@/utils/authOptions';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -9,7 +10,7 @@ export async function PUT(req: NextRequest) {
   // 데이터를 조작하고
   // 응답
 
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   const user = session?.user;
 
   // 허용되지 않은 사용자.

@@ -80,14 +80,16 @@ export async function getSavedPostsOf(userid: string) {
 function mapPosts(posts: SimplePost[]) {
   return posts.map(post => ({
     ...post,
+    likes: post.likes ?? [],
     photo: urlFor(post.photo),
   }));
 }
 
 export async function likePost(postid: string, usertokenid: string) {
+  console.log(usertokenid);
   return client
     .patch(postid)
-    .setIfMissing([{ likes: [] }])
+    .setIfMissing({ likes: [] })
     .append('likes', [
       {
         _ref: usertokenid,
