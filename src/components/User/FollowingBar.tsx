@@ -1,11 +1,10 @@
 'use client';
 
-import { HomeUser } from '@/model/user';
 import Link from 'next/link';
 import { PropagateLoader } from 'react-spinners';
-import useSWR from 'swr';
 import Avatar from '../Avatar/Avatar';
 import ScrollableBar from '../UI/Carousel/ScrollableBar';
+import useMe from '@/hook/useMe';
 
 // FollowingBar는 로그인한 사용자의 Following 데이터를 보여주면된다.
 // 사용자가 로그인에 성공했으면 서버측에서 사용자에 대한 페이지를 렌더링해서 주는데
@@ -26,24 +25,12 @@ export default function FollowingBar() {
   // 3. 백엔드에서 사용자의 상세 정보를 Sanity에서 가지고 옴(following)
   // 4 클라이언트 컴포넌트에서 UI를 보여줌
 
-  const { data: user, isLoading: loading, error } = useSWR<HomeUser>('/api/me');
+  const { user, isLoading: loading, error } = useMe();
   // useSWR의 return 타입이 any이기때문에 data가 불명확하다.
   // 타입의 안정성을 더해주기위해 새로운 type을 정의해보자.
 
-  const followingUsers = user?.following && [
-    ...user?.following,
-    ...user?.following,
-    ...user?.following,
-    ...user?.following,
-    ...user?.following,
-    ...user?.following,
-    ...user?.following,
-    ...user?.following,
-    ...user?.following,
-    ...user?.following,
-  ];
+  const followingUsers = user?.following;
   //
-
 
   return (
     <section className="w-full flex justify-center items-center p-4 shadow-sm shadow-neutral-300 mb-4 min-h-[90px] rounded-lg overflow-x-auto relative z-0">

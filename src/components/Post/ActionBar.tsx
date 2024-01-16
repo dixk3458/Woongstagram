@@ -9,6 +9,7 @@ import { SimplePost } from '@/model/post';
 import { getSession, useSession } from 'next-auth/react';
 import { useSWRConfig } from 'swr';
 import usePosts from '@/hook/usePosts';
+import useMe from '@/hook/useMe';
 
 type Props = {
   post: SimplePost;
@@ -20,8 +21,9 @@ export default function ActionBar({ post }: Props) {
   const { id: postid, userid, likes, text, createdAt } = post;
   // mount될때 false로 지정하지 말고
   // post의 likes배열에 사용자의 Id가 있는지 없는지에 따라서 상태를 설정할것이다.
-  const { data: session } = useSession();
-  const user = session?.user;
+
+  const { user, setBookmark } = useMe();
+  const { setLike } = usePosts();
 
   // const [liked, setLiked] = useState(
   //   user ? likes.includes(user.userid) : false
@@ -31,8 +33,7 @@ export default function ActionBar({ post }: Props) {
   // 사용자가 들어있는지에 따라서 결정
 
   const liked = user ? likes.includes(user.userid) : false;
-
-  const [bookmarked, setBookmarked] = useState(false);
+  const bookmarked = user?.bookmarks.includes(postid) ?? false;
 
   // 내부적으로 stale된 데이터를 사용하는것을 방지하도록
 
@@ -40,17 +41,18 @@ export default function ActionBar({ post }: Props) {
   // handleLike()는 boolean 타입을 인자로해서 그걸로 setLike하는거야
   // liked에는 toggeld로 전달된 값을 쓰면돼
 
-  const { setLike } = usePosts();
-
   const handleLike = (liked: boolean) => {
-    if (user) {
-      setLike(post, user.userid, liked);
-    }
+    user && setLike(post, user.userid, liked);
   };
 
+  const handleBookmark = (bookmark: boolean) => {
+    user && setBookmark(postid, bookmark);
+  };
 
   // like와 마찬가지로 bookmark 역시 토글되어야한다.
-  
+  // user의 bookmarks 정보는 HomeUser 타입에 정의를 해두었고  api/me를 통해 얻을수있다.
+  // 하지만 이곳저곳에서 api/me를 이용해 얻는것이아니라
+  // user(나)에 대한 유용한 정보를 얻는 커스텀 훅을 만들어 사용해보자.
 
   return (
     <>
@@ -63,7 +65,7 @@ export default function ActionBar({ post }: Props) {
         />
         <ToggleButton
           toggled={bookmarked}
-          onToggle={bookmarked => setBookmarked(bookmarked)}
+          onToggle={bookmark => handleBookmark(bookmark)}
           onIcon={<BookMarkFillIcon />}
           offIcon={<BookMarkIcon />}
         />

@@ -5,6 +5,7 @@
 // User 타입은 로그인 후 사용자 세션에 저장되는 데이터이다.
 // SideBar에 사용됨
 export type AuthUser = {
+  userimage: string | undefined;
   // 고유한 usertokenid
   usertokenid: string;
   username: string;

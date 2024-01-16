@@ -26,10 +26,11 @@ export default async function HomePage() {
       <div className="basis-1/4 ml-8">
         <SideBar
           user={{
-            username: user.name,
+            username: user.username,
             userid: user.userid,
             email: user.email,
-            image: user.userimage,
+            userimage: user.userimage,
+            usertokenid: user.usertokenid,
           }}
         />
       </div>

@@ -60,21 +60,25 @@ export async function getPostsOf(userid: string) {
 }
 
 export async function getLikedPostsOf(userid: string) {
-  return client.fetch(
-    `*[_type == "post" && "${userid}" in likes[]->userid]
+  return client
+    .fetch(
+      `*[_type == "post" && "${userid}" in likes[]->userid]
     | order(_createdAt desc){
       ${simplePostProjection}
     }`
-  );
+    )
+    .then(posts => mapPosts(posts));
 }
 
 export async function getSavedPostsOf(userid: string) {
-  return client.fetch(
-    `*[_type == "post" && _id in *[_type == "user" && userid == "${userid}"].bookmarks[]._ref]
+  return client
+    .fetch(
+      `*[_type == "post" && _id in *[_type == "user" && userid == "${userid}"].bookmarks[]._ref]
     | order(_createdAt desc){
       ${simplePostProjection}
     }`
-  );
+    )
+    .then(posts => mapPosts(posts));
 }
 
 function mapPosts(posts: SimplePost[]) {
