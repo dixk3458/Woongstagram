@@ -48,6 +48,10 @@ export default function ActionBar({ post }: Props) {
     }
   };
 
+
+  // like와 마찬가지로 bookmark 역시 토글되어야한다.
+  
+
   return (
     <>
       <div className="flex justify-between my-2 px-4">

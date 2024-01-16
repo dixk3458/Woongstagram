@@ -81,3 +81,26 @@ export async function getUserForProfile(userid: string) {
       posts: user.posts ?? 0,
     }));
 }
+
+export async function addBookmark(usertokenid: string, postid: string) {
+  // userid와 postid를 전달받아서
+  // Sanity의 user 스키마에 접근해 추가를 한다.
+
+  return client
+    .patch(usertokenid)
+    .setIfMissing({ bookmarks: [] })
+    .append('bookmarks', [
+      {
+        _ref: postid,
+        _type: 'reference',
+      },
+    ])
+    .commit({ autoGenerateArrayKeys: true });
+}
+
+export async function removeBookmark(usertokenid: string, postid: string) {
+  return client
+    .patch(usertokenid)
+    .unset([`bookmarks[_ref =="${postid}"]`])
+    .commit();
+}
