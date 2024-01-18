@@ -18,7 +18,8 @@ type Props = {
 };
 
 export default function PostListCard({ post, priority = false }: Props) {
-  const { userimage, userid, photo, likes, text, createdAt } = post;
+  const { id, userimage, userid, photo, likes, text, comments, createdAt } =
+    post;
   const [openModal, setOpenModal] = useState(false);
 
   // 이미지가 클릭 되면 상세 페이지를 보여줄 계획이다.
@@ -41,8 +42,19 @@ export default function PostListCard({ post, priority = false }: Props) {
         height={500}
         priority={priority}
       />
-      <ActionBar post={post} />
-      <CommentForm />
+      <ActionBar post={post}>
+        <p>
+          <span className="font-bold mr-1">{userid}</span>
+          {text}
+        </p>
+        {comments > 1 && (
+          <button
+            className="font-bold text-orange-500 my-2"
+            onClick={() => setOpenModal(true)}
+          >{`View all ${comments} comments`}</button>
+        )}
+      </ActionBar>
+      <CommentForm postid={id} />
       {openModal && (
         // PostModal은 content를 portal에 이어주는 역할이다.
         <Modal>

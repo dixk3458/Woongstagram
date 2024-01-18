@@ -13,12 +13,13 @@ import useMe from '@/hook/useMe';
 
 type Props = {
   post: SimplePost;
+  children?: React.ReactNode;
 };
 
 // boolean값에 따라서 토글을 할수있는 ToggleButton 컴포넌트를 만들어 재사용해볼것이다.
 
-export default function ActionBar({ post }: Props) {
-  const { id: postid, userid, likes, text, createdAt } = post;
+export default function ActionBar({ post, children }: Props) {
+  const { id: postid, userid, likes, text, createdAt, comments } = post;
   // mount될때 false로 지정하지 말고
   // post의 likes배열에 사용자의 Id가 있는지 없는지에 따라서 상태를 설정할것이다.
 
@@ -54,6 +55,15 @@ export default function ActionBar({ post }: Props) {
   // 하지만 이곳저곳에서 api/me를 이용해 얻는것이아니라
   // user(나)에 대한 유용한 정보를 얻는 커스텀 훅을 만들어 사용해보자.
 
+  // comment의 상태를 관리해주자.
+  // SimplePost 타입의 comments는 comment의 개수이다.
+  // 만약 comments가 1이라면 View all ~표시를 안하고
+  // 1보다 크다면 표시를 해주자
+  // 사용자가 form에 무언가를 입력했을때만 활성화
+  // 입력된 데이터를 이용해 서버에 요청을 해야한다.
+
+  // 어떤 post에 어떤 comment를 추가해주어야할지 알려주어야한다.(postid,comment)
+
   return (
     <>
       <div className="flex justify-between my-2 px-4">
@@ -74,12 +84,7 @@ export default function ActionBar({ post }: Props) {
         <p className="text-sm font-bold mb-2">{`${likes?.length ?? 0} ${
           likes?.length > 1 ? 'likes' : 'like'
         }`}</p>
-        {text && (
-          <p>
-            <span className="font-bold mr-1">{userid}</span>
-            {text}
-          </p>
-        )}
+        {children}
         <p className="text-xs text-neutral-500 uppercase my-2">
           {formatDate(createdAt)}
         </p>
