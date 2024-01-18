@@ -3,7 +3,7 @@ import { authOptions } from '@/utils/authOptions';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   const user = session?.user;
 
@@ -24,5 +24,5 @@ export async function PUT(req: NextRequest) {
   // comment에는 comment
   return addComment(user.usertokenid, postid, comment)
     .then(data => NextResponse.json(data))
-    .catch(error => new NextResponse(JSON.stringify(error), { status: 501 }));
+    .catch(error => new NextResponse(JSON.stringify(error), { status: 500 }));
 }

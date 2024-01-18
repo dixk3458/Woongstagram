@@ -11,6 +11,7 @@ import Modal from '../Modal/Modal';
 import PostModal from './PostModal';
 import PostDetail from './PostDetail';
 import PostUserAvatar from './PostUserAvatar';
+import usePosts from '@/hook/usePosts';
 
 type Props = {
   post: SimplePost;
@@ -30,6 +31,11 @@ export default function PostListCard({ post, priority = false }: Props) {
   // 사용자의 클릭 이벤트 interaction 처리를 위해 클라이언트 컴포넌트
   // modal이 열렸는지 안열렸는지 상태관리
 
+  const { postComment } = usePosts();
+
+  const handlePostComment = (comment: string) => {
+    postComment(post, comment);
+  };
   return (
     <article className="rounded-lg shadow-md border-gray-200">
       <PostUserAvatar userid={userid} userimage={userimage} />
@@ -54,7 +60,7 @@ export default function PostListCard({ post, priority = false }: Props) {
           >{`View all ${comments} comments`}</button>
         )}
       </ActionBar>
-      <CommentForm postid={id} />
+      <CommentForm onPostComment={comment => handlePostComment(comment)} />
       {openModal && (
         // PostModal은 content를 portal에 이어주는 역할이다.
         <Modal>
