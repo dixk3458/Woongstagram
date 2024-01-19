@@ -5,6 +5,8 @@ import PostUserAvatar from './PostUserAvatar';
 import ActionBar from './ActionBar';
 import Avatar from '../Avatar/Avatar';
 import CommentForm from './CommentForm';
+import useFullPost from '@/hook/useFullPost';
+import useMe from '@/hook/useMe';
 
 type Props = {
   post: SimplePost;
@@ -19,8 +21,18 @@ export default function PostDetail({ post }: Props) {
 
   // comments는 api route를 이용해 받아오자.
   // 해당 post의 고유 id로 통신
-  const { data } = useSWR<FullPost>(`/api/post/${id}`);
+  const { post: data, postComment } = useFullPost(id);
+  const { user } = useMe();
   const comments = data?.comments;
+
+  const handlePostComment = (comment: string) => {
+    user &&
+      postComment({
+        comment: comment,
+        userid: user.userid,
+        userimage: user.image,
+      });
+  };
 
   return (
     <section className="flex w-full h-full">
@@ -55,7 +67,7 @@ export default function PostDetail({ post }: Props) {
             )}
         </ul>
         <ActionBar post={post} />
-        <CommentForm />
+        <CommentForm onPostComment={comment => handlePostComment(comment)} />
       </div>
     </section>
   );

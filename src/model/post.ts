@@ -1,7 +1,7 @@
 export type Comment = {
   comment: string;
   userid: string;
-  userimage: string;
+  userimage?: string | undefined;
 };
 
 export type FullPost = {

@@ -12,16 +12,6 @@ async function updateLike(postid: string, like: boolean) {
   // 글로벌로 설정한 fetch가 아니기에 직접 res를 처리해주어야한다.
 }
 
-async function adds(postid: string, comment: string) {
-  fetch('/api/comment', {
-    method: 'POST',
-    body: JSON.stringify({
-      postid: postid,
-      comment: comment,
-    }),
-  }).then(res => res.json());
-}
-
 async function addComment(postid: string, comment: string) {
   return fetch('/api/comment', {
     method: 'POST',
