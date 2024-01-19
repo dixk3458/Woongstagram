@@ -7,6 +7,7 @@ type Props = {
 };
 
 export default function UserProfile({ user }: Props) {
+  // params로 전달된 사용자 페이지
   const { userid, username, image, following, followers, posts } = user;
 
   const info = [
