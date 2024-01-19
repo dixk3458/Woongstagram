@@ -67,7 +67,7 @@ export async function getUserForProfile(userid: string) {
     .fetch(
       `*[_type == "user" && userid == "${userid}"][0]{
     ...,
-    "id":_id,
+    "usertokenid":_id,
     "userimage":image,
     "following":count(following),
     "followers":count(followers),
@@ -109,12 +109,9 @@ export async function follow(myId: string, targetId: string) {
   return client
     .transaction() //
     .patch(myId, user =>
-      user.setIfMissing({ following: [] }).append('following', [
-        {
-          _ref: targetId,
-          _type: 'reference',
-        },
-      ])
+      user //
+        .setIfMissing({ following: [] }) //
+        .append('following', [{ _ref: targetId, _type: 'reference' }])
     )
     .patch(targetId, user =>
       user //

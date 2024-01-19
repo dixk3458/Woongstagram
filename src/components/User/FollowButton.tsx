@@ -14,7 +14,7 @@ export default function FollowButton({ user }: Props) {
   // 버튼의 클릭이벤트를 처리해야하기때문에, Client Component로 생성을하자.
 
   // 현재 로그인한 사용자(나)를 얻는다.
-  const { user: loggedInUser, isLoading, error } = useMe();
+  const { user: loggedInUser, isLoading, error, toggleFollow } = useMe();
 
   // 클라이언트 측에서 서버에게 내가
   // 로그인한 사용자의 following배열에 인자로 전달받은 user의 userid가 있는지 검사
@@ -29,10 +29,21 @@ export default function FollowButton({ user }: Props) {
     );
 
   const text = isFollowing ? 'Unfollow' : 'Follow';
+
+  const handleFollow = () => {
+    toggleFollow(user.usertokenid, !isFollowing);
+  };
+
   return (
     <>
       {isShow && (
-        <Button text={text} onClick={() => {}} red={text === 'Unfollow'} />
+        <Button
+          text={text}
+          onClick={() => {
+            handleFollow();
+          }}
+          red={text === 'Unfollow'}
+        />
       )}
     </>
   );
