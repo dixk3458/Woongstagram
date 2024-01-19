@@ -3,12 +3,17 @@
 import { ProfileUser } from '@/model/user';
 import Button from '../UI/Button/Button';
 import useMe from '@/hook/useMe';
+import revalidateProfileUser from '@/actions/actions';
+import { useState, useTransition } from 'react';
+import { PulseLoader } from 'react-spinners';
 
 type Props = {
   user: ProfileUser;
 };
 
 export default function FollowButton({ user }: Props) {
+  const [isFetching, setIsFetching] = useState(false);
+
   // 지금 보고있는 user가 로그인 사용자가 following하는지를 확인해야한다.
 
   // 버튼의 클릭이벤트를 처리해야하기때문에, Client Component로 생성을하자.
@@ -30,20 +35,31 @@ export default function FollowButton({ user }: Props) {
 
   const text = isFollowing ? 'Unfollow' : 'Follow';
 
-  const handleFollow = () => {
-    toggleFollow(user.usertokenid, !isFollowing);
+  const handleFollow = async () => {
+    setIsFetching(true);
+    await toggleFollow(user.usertokenid, !isFollowing);
+    setIsFetching(false);
+    revalidateProfileUser(user.userid);
   };
 
   return (
     <>
       {isShow && (
-        <Button
-          text={text}
-          onClick={() => {
-            handleFollow();
-          }}
-          red={text === 'Unfollow'}
-        />
+        <div className="relative">
+          {isFetching && (
+            <div className="absolute z-20 inset-0 flex justify-center items-center">
+              <PulseLoader size={6} />
+            </div>
+          )}
+          <Button
+            isLoading={isFetching}
+            text={text}
+            onClick={() => {
+              handleFollow();
+            }}
+            red={text === 'Unfollow'}
+          />
+        </div>
       )}
     </>
   );

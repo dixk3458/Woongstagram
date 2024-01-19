@@ -72,7 +72,11 @@ export async function getUserForProfile(userid: string) {
     "following":count(following),
     "followers":count(followers),
     "posts":count(*[_type == "post" && author->userid == "${userid}"])
-  }`
+  }`,
+      undefined,
+      {
+        next: { tags: [`profile/${userid}`] },
+      }
     )
     .then(user => ({
       ...user,
