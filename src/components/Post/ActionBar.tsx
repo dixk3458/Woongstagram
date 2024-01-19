@@ -1,25 +1,24 @@
-import { useState } from 'react';
 import BookMarkIcon from '../UI/Icons/BookMarkIcon';
 import HeartIcon from '../UI/Icons/HeartIcon';
 import formatDate from '@/utils/date';
 import ToggleButton from '../UI/Button/ToggleButton';
 import HeartFillIcon from '../UI/Icons/HeartFillIcon';
 import BookMarkFillIcon from '../UI/Icons/BookMarkFillIcon';
-import { SimplePost } from '@/model/post';
-import { getSession, useSession } from 'next-auth/react';
-import { useSWRConfig } from 'swr';
+import { Comment, SimplePost } from '@/model/post';
 import usePosts from '@/hook/usePosts';
 import useMe from '@/hook/useMe';
+import CommentForm from './CommentForm';
 
 type Props = {
   post: SimplePost;
   children?: React.ReactNode;
+  onComment: (comment: Comment) => void;
 };
 
 // boolean값에 따라서 토글을 할수있는 ToggleButton 컴포넌트를 만들어 재사용해볼것이다.
 
-export default function ActionBar({ post, children }: Props) {
-  const { id: postid, userid, likes, text, createdAt, comments } = post;
+export default function ActionBar({ post, children, onComment }: Props) {
+  const { id: postid, likes, createdAt } = post;
   // mount될때 false로 지정하지 말고
   // post의 likes배열에 사용자의 Id가 있는지 없는지에 따라서 상태를 설정할것이다.
 
@@ -48,6 +47,15 @@ export default function ActionBar({ post, children }: Props) {
 
   const handleBookmark = (bookmark: boolean) => {
     user && setBookmark(postid, bookmark);
+  };
+
+  const handleComment = (comment: string) => {
+    user &&
+      onComment({
+        comment: comment,
+        userid: user.userid,
+        userimage: user.image,
+      });
   };
 
   // like와 마찬가지로 bookmark 역시 토글되어야한다.
@@ -89,6 +97,7 @@ export default function ActionBar({ post, children }: Props) {
           {formatDate(createdAt)}
         </p>
       </div>
+      <CommentForm onPostComment={comment => handleComment(comment)} />
     </>
   );
 }

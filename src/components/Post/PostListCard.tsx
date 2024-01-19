@@ -1,10 +1,8 @@
 'use client';
 
-import { SimplePost } from '@/model/post';
-import Avatar from '../Avatar/Avatar';
+import { Comment, SimplePost } from '@/model/post';
 import Image from 'next/image';
 
-import CommentForm from './CommentForm';
 import ActionBar from './ActionBar';
 import { useState } from 'react';
 import Modal from '../Modal/Modal';
@@ -19,8 +17,7 @@ type Props = {
 };
 
 export default function PostListCard({ post, priority = false }: Props) {
-  const { id, userimage, userid, photo, likes, text, comments, createdAt } =
-    post;
+  const { userimage, userid, photo, text, comments } = post;
   const [openModal, setOpenModal] = useState(false);
 
   // 이미지가 클릭 되면 상세 페이지를 보여줄 계획이다.
@@ -33,7 +30,7 @@ export default function PostListCard({ post, priority = false }: Props) {
 
   const { postComment } = usePosts();
 
-  const handlePostComment = (comment: string) => {
+  const handlePostComment = (comment: Comment) => {
     postComment(post, comment);
   };
   return (
@@ -48,7 +45,7 @@ export default function PostListCard({ post, priority = false }: Props) {
         height={500}
         priority={priority}
       />
-      <ActionBar post={post}>
+      <ActionBar post={post} onComment={comment => handlePostComment(comment)}>
         <p>
           <span className="font-bold mr-1">{userid}</span>
           {text}
@@ -60,7 +57,6 @@ export default function PostListCard({ post, priority = false }: Props) {
           >{`View all ${comments} comments`}</button>
         )}
       </ActionBar>
-      <CommentForm onPostComment={comment => handlePostComment(comment)} />
       {openModal && (
         // PostModal은 content를 portal에 이어주는 역할이다.
         <Modal>

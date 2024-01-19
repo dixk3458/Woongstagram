@@ -1,12 +1,9 @@
-import { FullPost, SimplePost } from '@/model/post';
+import { SimplePost } from '@/model/post';
 import Image from 'next/image';
-import useSWR from 'swr';
 import PostUserAvatar from './PostUserAvatar';
 import ActionBar from './ActionBar';
 import Avatar from '../Avatar/Avatar';
-import CommentForm from './CommentForm';
 import useFullPost from '@/hook/useFullPost';
-import useMe from '@/hook/useMe';
 
 type Props = {
   post: SimplePost;
@@ -17,22 +14,12 @@ export default function PostDetail({ post }: Props) {
   // 즉 comments에는 해당 post의 comment의 개수만 있다.
   // 하지만 우리가 원하는것은 comments 배열에 comment 타입의 객체가 있기를 바란다.
 
-  const { userid, userimage, photo, text, likes, id, createdAt } = post;
+  const { userid, userimage, photo, id } = post;
 
   // comments는 api route를 이용해 받아오자.
   // 해당 post의 고유 id로 통신
   const { post: data, postComment } = useFullPost(id);
-  const { user } = useMe();
   const comments = data?.comments;
-
-  const handlePostComment = (comment: string) => {
-    user &&
-      postComment({
-        comment: comment,
-        userid: user.userid,
-        userimage: user.image,
-      });
-  };
 
   return (
     <section className="flex w-full h-full">
@@ -46,19 +33,21 @@ export default function PostDetail({ post }: Props) {
           priority
         />
       </div>
-      <div className="flex flex-col basis-2/5">
+      <div className="flex flex-col basis-2/5 overflow-x-auto">
         <PostUserAvatar userid={userid} userimage={userimage} />
-        <ul className="h-full p-4 overflow-y-auto border-t border-gray-200 mb-1">
+        <ul className="h-full  p-4 overflow-y-auto border-t border-gray-200 mb-1">
           {comments &&
             comments.map(
               ({ userid: commentUserid, userimage, comment }, index) => (
                 <li key={index} className="flex items-center mb-1">
-                  <Avatar
-                    image={userimage}
-                    size="small"
-                    highlight={commentUserid === userid}
-                  />
-                  <div className="ml-2">
+                  <div>
+                    <Avatar
+                      image={userimage}
+                      size="small"
+                      highlight={commentUserid === userid}
+                    />
+                  </div>
+                  <div className="ml-2 ">
                     <span className="font-bold mr-2">{commentUserid}</span>
                     <span>{comment}</span>
                   </div>
@@ -66,8 +55,7 @@ export default function PostDetail({ post }: Props) {
               )
             )}
         </ul>
-        <ActionBar post={post} />
-        <CommentForm onPostComment={comment => handlePostComment(comment)} />
+        <ActionBar post={post} onComment={comment => postComment(comment)} />
       </div>
     </section>
   );

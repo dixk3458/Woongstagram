@@ -1,4 +1,4 @@
-import { SimplePost } from '@/model/post';
+import { Comment, SimplePost } from '@/model/post';
 import useSWR from 'swr';
 
 async function updateLike(postid: string, like: boolean) {
@@ -52,7 +52,7 @@ export default function usePosts() {
     });
   };
 
-  const postComment = (post: SimplePost, comment: string) => {
+  const postComment = (post: SimplePost, comment: Comment) => {
     // Sanity에 로직이 완료되기전에 먼저 UI상으로 빠르게 보여주기위해 데이터를 생성
     const newPost = {
       ...post,
@@ -61,7 +61,7 @@ export default function usePosts() {
 
     const newPosts = posts?.map(p => (p.id === post.id ? newPost : p));
 
-    return mutate(addComment(post.id, comment), {
+    return mutate(addComment(post.id, comment.comment), {
       optimisticData: newPosts,
       populateCache: false,
       revalidate: false,
