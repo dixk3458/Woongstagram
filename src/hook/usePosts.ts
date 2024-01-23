@@ -1,3 +1,4 @@
+import { useCacheKeys } from '@/context/CacheKeysContext';
 import { Comment, SimplePost } from '@/model/post';
 import { useCallback } from 'react';
 import useSWR from 'swr';
@@ -24,18 +25,18 @@ async function addComment(postid: string, comment: string) {
   // 글로벌로 설정한 fetch가 아니기에 직접 res를 처리해주어야한다.
 }
 
-export default function usePosts(cacheKey: string = '/api/post') {
+export default function usePosts() {
   // 커스텀 훅으로 posts를 가져오고
   // posts에대한 유용한 정보를 반환해줄것이다.
 
-  console.log(cacheKey);
+  const cacheKeys = useCacheKeys();
 
   const {
     data: posts,
     isLoading,
     error,
     mutate,
-  } = useSWR<SimplePost[]>(cacheKey);
+  } = useSWR<SimplePost[]>(cacheKeys.postsKey);
 
   const setLike = useCallback(
     (post: SimplePost, userid: string, like: boolean) => {

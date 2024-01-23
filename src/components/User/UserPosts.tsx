@@ -6,6 +6,7 @@ import PostIcon from '../UI/Icons/PostIcon';
 import HeartIcon from '../UI/Icons/HeartIcon';
 import BookMarkIcon from '../UI/Icons/BookMarkIcon';
 import PostGrid from '../Post/PostGrid';
+import { CacheKeysContext } from '@/context/CacheKeysContext';
 
 type Props = {
   user: ProfileUser;
@@ -37,7 +38,9 @@ export default function UserPosts({ user }: Props) {
       <ul className="flex justify-center items-center uppercase ">
         {tabs.map(({ type, icon }, index) => (
           <li
-            className={`flex items-center mx-12 py-4 cursor-pointer ${query === type && 'font-bold border-t border-black'}`}
+            className={`flex items-center mx-12 py-4 cursor-pointer ${
+              query === type && 'font-bold border-t border-black'
+            }`}
             key={index}
             onClick={() => setQuery(type)}
           >
@@ -46,7 +49,11 @@ export default function UserPosts({ user }: Props) {
           </li>
         ))}
       </ul>
-      <PostGrid userid={userid} query={query} />
+      <CacheKeysContext.Provider
+        value={{ postsKey: `/api/user/${userid}/${query}` }}
+      >
+        <PostGrid />
+      </CacheKeysContext.Provider>
     </section>
   );
 }
