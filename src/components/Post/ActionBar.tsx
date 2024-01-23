@@ -13,17 +13,23 @@ type Props = {
   post: SimplePost;
   children?: React.ReactNode;
   onComment: (comment: Comment) => void;
+  cacheKey: string;
 };
 
 // boolean값에 따라서 토글을 할수있는 ToggleButton 컴포넌트를 만들어 재사용해볼것이다.
 
-export default function ActionBar({ post, children, onComment }: Props) {
+export default function ActionBar({
+  post,
+  children,
+  onComment,
+  cacheKey,
+}: Props) {
   const { id: postid, likes, createdAt } = post;
   // mount될때 false로 지정하지 말고
   // post의 likes배열에 사용자의 Id가 있는지 없는지에 따라서 상태를 설정할것이다.
 
   const { user, setBookmark } = useMe();
-  const { setLike } = usePosts();
+  const { setLike } = usePosts(cacheKey);
 
   // const [liked, setLiked] = useState(
   //   user ? likes.includes(user.userid) : false

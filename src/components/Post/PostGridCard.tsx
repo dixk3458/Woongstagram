@@ -11,9 +11,10 @@ import { signIn, useSession } from 'next-auth/react';
 type Props = {
   post: SimplePost;
   priority: boolean;
+  cacheKey: string;
 };
 
-export default function PostGridCard({ post, priority }: Props) {
+export default function PostGridCard({ post, priority, cacheKey }: Props) {
   const { photo, userid } = post;
 
   // PostListCard에서와 마찬가지로 클릭하면 PostDetail을 생성해야한다.
@@ -51,7 +52,7 @@ export default function PostGridCard({ post, priority }: Props) {
       {openModal && (
         <Modal>
           <PostModal onClose={() => setOpenModal(false)}>
-            <PostDetail post={post} />
+            <PostDetail post={post} cacheKey={cacheKey} />
           </PostModal>
         </Modal>
       )}

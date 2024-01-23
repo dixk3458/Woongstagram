@@ -7,9 +7,10 @@ import useFullPost from '@/hook/useFullPost';
 
 type Props = {
   post: SimplePost;
+  cacheKey:string;
 };
 
-export default function PostDetail({ post }: Props) {
+export default function PostDetail({ post,cacheKey }: Props) {
   // PostListCard로부터 받아온 Post 객체안에는 SimplePost 타입의 post가 들어있다.
   // 즉 comments에는 해당 post의 comment의 개수만 있다.
   // 하지만 우리가 원하는것은 comments 배열에 comment 타입의 객체가 있기를 바란다.
@@ -55,7 +56,7 @@ export default function PostDetail({ post }: Props) {
               )
             )}
         </ul>
-        <ActionBar post={post} onComment={comment => postComment(comment)} />
+        <ActionBar post={post} onComment={comment => postComment(comment)} cacheKey={cacheKey} />
       </div>
     </section>
   );

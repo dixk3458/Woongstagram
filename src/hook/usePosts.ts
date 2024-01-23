@@ -24,16 +24,19 @@ async function addComment(postid: string, comment: string) {
   // 글로벌로 설정한 fetch가 아니기에 직접 res를 처리해주어야한다.
 }
 
-export default function usePosts() {
+export default function usePosts(cacheKey: string = '/api/post') {
   // 커스텀 훅으로 posts를 가져오고
   // posts에대한 유용한 정보를 반환해줄것이다.
+
+  console.log(cacheKey);
 
   const {
     data: posts,
     isLoading,
     error,
     mutate,
-  } = useSWR<SimplePost[]>('/api/post');
+  } = useSWR<SimplePost[]>(cacheKey);
+
   const setLike = useCallback(
     (post: SimplePost, userid: string, like: boolean) => {
       // Sanity에 로직이 완료되기전에 먼저 UI상으로 빠르게 보여주기위해 데이터를 생성
