@@ -72,7 +72,6 @@ export default function ActionBar({ post, children, onComment }: Props) {
 
   // 어떤 post에 어떤 comment를 추가해주어야할지 알려주어야한다.(postid,comment)
 
-  console.log(post);
   return (
     <>
       <div className="flex justify-between my-2 px-4">
