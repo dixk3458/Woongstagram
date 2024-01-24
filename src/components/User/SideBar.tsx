@@ -13,12 +13,12 @@ type Props = {
 };
 
 export default function SideBar({
-  user: { username, email, image, userid },
+  user: { username, userimage, userid },
 }: Props) {
   return (
     <section className="flex flex-col gap-4 ">
       <div className="flex items-center">
-        {image && <Avatar image={image} />}
+        {userimage && <Avatar image={userimage} />}
         <div className="ml-4">
           <p className="font-bold">{userid}</p>
           <p className="text-lg text-neutral-500 leading-4">{username}</p>

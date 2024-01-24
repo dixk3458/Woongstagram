@@ -29,7 +29,7 @@ export default async function HomePage() {
             username: user.username,
             userid: user.userid,
             email: user.email,
-            userimage: user.userimage,
+            userimage: user.image,
             usertokenid: user.usertokenid,
           }}
         />
