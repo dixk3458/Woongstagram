@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
-export const metaData: Metadata = {
+export const metadata: Metadata = {
   title: 'New Post',
   description: 'Create a new post',
 };
