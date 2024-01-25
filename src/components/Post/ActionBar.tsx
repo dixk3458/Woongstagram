@@ -76,12 +76,14 @@ export default function ActionBar({ post, children, onComment }: Props) {
     <>
       <div className="flex justify-between my-2 px-4">
         <ToggleButton
+          title={liked ? 'unlike' : 'like'}
           toggled={liked}
           onToggle={liked => handleLike(liked)}
           onIcon={<HeartFillIcon />}
           offIcon={<HeartIcon />}
         />
         <ToggleButton
+          title={bookmarked ? 'unbookmark' : 'bookmark'}
           toggled={bookmarked}
           onToggle={bookmark => handleBookmark(bookmark)}
           onIcon={<BookMarkFillIcon />}
