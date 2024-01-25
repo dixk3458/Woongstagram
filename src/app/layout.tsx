@@ -25,8 +25,11 @@ export default function RootLayout({
       <head>
         <meta property="og:title" content="Woongstagram" />
         <meta property="og:type" content="SNS" />
-        <meta property="og:url" content="" />
-        <meta property="og:image" content="" />
+        <meta property="og:url" content="https://woongstagram.vercel.app" />
+        <meta
+          property="og:image"
+          content="https://woongstagram.vercel.app/images/woongstagram.png"
+        />
       </head>
       <body className="bg-orange-50 w-full">
         <AuthContext>

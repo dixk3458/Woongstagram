@@ -3,6 +3,7 @@ import { authOptions } from '@/utils/authOptions';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { getProviders, signIn } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 type Props = {
   searchParams: {
@@ -22,7 +23,7 @@ export default async function SignInPage({
   const session = await getServerSession(authOptions);
 
   if (session) {
-    return { redirect: { destination: '/' } };
+    redirect('/');
   }
 
   const providers = (await getProviders()) ?? {};
