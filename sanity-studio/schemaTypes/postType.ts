@@ -54,4 +54,21 @@ export const postType = defineType({
       ],
     }),
   ],
+  preview: {
+    select: {
+      title: 'comments.0.text',
+      authorName: 'author.name',
+      authorUserName: 'author.userName',
+      media: 'photo',
+    },
+    prepare(selection) {
+      const {title, authorName, authorUserName, media} = selection
+
+      return {
+        title,
+        subtitle: `by ${authorName} (${authorUserName})`,
+        media,
+      }
+    },
+  },
 })
