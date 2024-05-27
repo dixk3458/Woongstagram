@@ -22,7 +22,7 @@ export default async function SignInPage({
   // 동적인 클릭 이벤트를 처리하기 위해선 Client 컴포넌트를 만들어야한다
 
   return (
-    <section>
+    <section className="flex justify-center mt-[30%]">
       <Signin providers={providers} callbackUrl={callbackUrl ?? '/'} />
     </section>
   );
