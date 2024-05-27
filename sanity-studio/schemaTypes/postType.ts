@@ -1,4 +1,5 @@
-import {defineField, defineType} from 'sanity'
+import { defineType, defineField } from 'sanity';
+
 
 export const postType = defineType({
   name: 'post',
