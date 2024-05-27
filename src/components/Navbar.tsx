@@ -9,6 +9,7 @@ import NewIcon from './ui/NewIcon';
 import NewFillIcon from './ui/NewFillIcon';
 import { usePathname } from 'next/navigation';
 import ColorButton from './ui/ColorButton';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 // 추상화 시키면 유지보수성++
 const menus = [
@@ -31,6 +32,7 @@ const menus = [
 
 export default function Navbar() {
   const pathName = usePathname(); // client component 훅
+  const { data: session } = useSession();
 
   return (
     <div className="flex justify-between items-center px-6">
@@ -44,7 +46,11 @@ export default function Navbar() {
               <Link href={href}>{pathName === href ? clickedIcon : icon}</Link>
             </li>
           ))}
-          <ColorButton text="Sign in" onClick={() => {}} />
+          {!session ? (
+            <ColorButton text="Sign in" onClick={() => signIn()} />
+          ) : (
+            <ColorButton text="Sign out" onClick={() => signOut()} />
+          )}
         </ul>
       </nav>
     </div>
