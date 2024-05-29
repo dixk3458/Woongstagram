@@ -9,21 +9,22 @@ type Props = {
 export default async function SideBar({
   user: { name, userName, image },
 }: Props) {
-  console.log(userName);
   return (
     <>
-      <div>
-        {image && <Avatar image={image} />}
-        <div>
-          <p>{userName}</p>
-          <p>{name}</p>
+      <div className="flex items-center">
+        {image && <Avatar image={image} size="normal" highlight={false} />}
+        <div className="ml-4">
+          <p className="font-bold">{userName}</p>
+          <p className="text-lg text-neutral-500 leading-4">{name}</p>
         </div>
       </div>
-      <p>
+      <p className="text-sm text-neutral-500 mt-8">
         About ∙ Help ∙ Press ∙ API ∙ Jobs ∙ Privacy ∙ Terms ∙ Location ∙
         Language
       </p>
-      <p>© 2024 Jaewoong, Built with Next</p>
+      <p className="text-sm text-neutral-500 mt-8">
+        © 2024 Jaewoong, Built with Next
+      </p>
     </>
   );
 }

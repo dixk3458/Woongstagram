@@ -15,12 +15,14 @@ export default async function HomePage() {
   const user = session.user;
 
   return (
-    <section>
-      <div>
+    <section className="flex flex-col w-full max-w-[850px]  md:flex-row">
+      <div className="w-full basis-3/4">
         <FollowingBar />
         <PostList />
       </div>
-      <SideBar user={user} />
+      <div className="w-full basis-1/4">
+        <SideBar user={user} />
+      </div>
     </section>
   );
 }
