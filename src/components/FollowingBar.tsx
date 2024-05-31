@@ -5,6 +5,7 @@ import Link from 'next/link';
 import useSWR from 'swr';
 import Avatar from './Avatar';
 import { Hourglass } from 'react-loader-spinner';
+import ScrollableBar from './ScrollableBar';
 
 export default function FollowingBar() {
   const { data, isLoading: loading, error } = useSWR<DetailUser>('/api/me');
@@ -21,7 +22,7 @@ export default function FollowingBar() {
 
   return (
     <section className="mb-8 bg-gradient-to-bl from-indigo-300 via-purple-300 to-pink-300 rounded-lg shadow-lg p-[0.2rem]">
-      <div className="bg-white w-full min-h-[90px] flex justify-center items-center rounded-md">
+      <div className="bg-white w-full min-h-[90px] flex justify-center items-center rounded-md overflow-x-auto p-4">
         {loading ? (
           <Hourglass
             visible={true}
@@ -38,21 +39,20 @@ export default function FollowingBar() {
           )
         )}
         {followingUsers && followingUsers.length > 0 && (
-          <ul className="w-full flex justify-start items-center gap-4 p-4 overflow-x-auto">
+          <ScrollableBar>
             {followingUsers.map(({ userName, image }) => (
-              <li key={userName}>
-                <Link
-                  href={`/user/${userName}`}
-                  className="flex flex-col items-center w-20"
-                >
-                  <Avatar image={image} highlight={true} />
-                  <p className="text-sm text-ellipsis overflow-hidden w-full">
-                    {userName}ddddddd
-                  </p>
-                </Link>
-              </li>
+              <Link
+                key={userName}
+                href={`/user/${userName}`}
+                className="flex flex-col items-center w-20"
+              >
+                <Avatar image={image} highlight={true} />
+                <p className="text-sm text-ellipsis overflow-hidden w-full">
+                  {userName}ddddddd
+                </p>
+              </Link>
             ))}
-          </ul>
+          </ScrollableBar>
         )}
       </div>
     </section>
