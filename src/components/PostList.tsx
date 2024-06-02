@@ -15,21 +15,23 @@ export default function PostList() {
   return (
     <section>
       {loading && (
-        <ProgressBar
-          visible={true}
-          height="80"
-          width="80"
-          borderColor="#BEB4FD"
-          barColor="#F1ABDE"
-          ariaLabel="progress-bar-loading"
-          wrapperStyle={{}}
-          wrapperClass=""
-        />
+        <div className="flex justify-center">
+          <ProgressBar
+            visible={true}
+            height="80"
+            width="80"
+            borderColor="#BEB4FD"
+            barColor="#F1ABDE"
+            ariaLabel="progress-bar-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+          />
+        </div>
       )}
       {posts && (
         <ul>
           {posts.map(post => (
-            <li key={post.id}>
+            <li key={post.id} className="mb-4">
               <PostListCard post={post} />
             </li>
           ))}
