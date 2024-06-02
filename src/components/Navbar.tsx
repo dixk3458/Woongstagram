@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import HomeIcon from './ui/HomeIcon';
-import HomeFillIcon from './ui/HomeFillIcon';
-import SearchIcon from './ui/SearchIcon';
-import SearchFillIcon from './ui/SearchFillIcon';
-import NewIcon from './ui/NewIcon';
-import NewFillIcon from './ui/NewFillIcon';
+import HomeIcon from './ui/icon/HomeIcon';
+import HomeFillIcon from './ui/icon/HomeFillIcon';
+import SearchIcon from './ui/icon/SearchIcon';
+import SearchFillIcon from './ui/icon/SearchFillIcon';
+import NewIcon from './ui/icon/NewIcon';
+import NewFillIcon from './ui/icon/NewFillIcon';
 import { usePathname } from 'next/navigation';
 import ColorButton from './ui/ColorButton';
 import { signIn, signOut, useSession } from 'next-auth/react';
