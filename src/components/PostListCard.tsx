@@ -1,16 +1,16 @@
 import { SimplePost } from '@/model/post';
 import Avatar from './Avatar';
 import Image from 'next/image';
-import HeartIcon from './ui/icon/HeartIcon';
-import BookmarkIcon from './ui/icon/BookmarkIcon';
-import { parseDate } from '@/util/date';
 import Link from 'next/link';
+import CommentForm from './CommentForm';
+import ActionBar from './ActionBar';
 
 type Props = {
   post: SimplePost;
+  priority?:boolean;
 };
 
-export default function PostListCard({ post }: Props) {
+export default function PostListCard({ post,priority }: Props) {
   const { userImage, userName, image, likes, text, createdAt } = post;
   return (
     <article className="rounded-lg border border-neutral-200 shadow-md overflow-hidden">
@@ -29,30 +29,15 @@ export default function PostListCard({ post }: Props) {
         width={500}
         height={500}
         className="w-full object-cover aspect-square"
+        priority={priority}
       />
-      <div className="flex justify-between px-4 py-2">
-        <HeartIcon />
-        <BookmarkIcon />
-      </div>
-      <div className="px-4 py-1">
-        <p className="font-bold mb-1">{`${likes?.length ?? 0} ${
-          likes?.length > 1 ? 'Likes' : 'Like'
-        }`}</p>
-        <p>
-          <span className="font-bold mr-2 mb-1">{userName}</span>
-          {text}
-        </p>
-        <p className="text-neutral-400 mb-1">{parseDate(createdAt)}</p>
-      </div>
-      <form className="flex border-t">
-        <input
-          type="text"
-          className="grow border-none outline-none py-2 px-4"
-        />
-        <button className="bg-gradient-to-bl from-indigo-300 via-purple-300 to-pink-300 font-bold p-2">
-          POST
-        </button>
-      </form>
+      <ActionBar
+        likes={likes}
+        userName={userName}
+        text={text}
+        createdAt={createdAt}
+      />
+      <CommentForm />
     </article>
   );
 }
