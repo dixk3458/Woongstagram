@@ -9,6 +9,7 @@ import ActionBar from './ActionBar';
 import { useState } from 'react';
 import ModalPortal from './ui/ModalPortal';
 import PostModal from './PostModal';
+import PostDetail from './PostDetail';
 
 type Props = {
   post: SimplePost;
@@ -48,8 +49,8 @@ export default function PostListCard({ post, priority }: Props) {
       <CommentForm />
       {openModal && (
         <ModalPortal>
-          <PostModal onClose={()=>setOpenModal(false)}>
-            <div>찐 내용</div>
+          <PostModal onClose={() => setOpenModal(false)}>
+            <PostDetail post={post} />
           </PostModal>
         </ModalPortal>
       )}
