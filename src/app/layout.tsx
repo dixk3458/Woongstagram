@@ -20,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={openSans.className}>
       <body className="flex flex-col w-full h-full max-w-screen-xl overflow-auto mx-auto">
+        <div id="portal" />
         <AuthContext>
           <header className="sticky top-0 bg-white z-10 border-b">
             <Navbar />
