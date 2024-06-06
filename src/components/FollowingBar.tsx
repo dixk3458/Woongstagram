@@ -22,7 +22,7 @@ export default function FollowingBar() {
 
   return (
     <section className="mb-8 bg-gradient-to-bl from-indigo-300 via-purple-300 to-pink-300 rounded-lg shadow-lg p-[0.2rem]">
-      <div className="bg-white w-full min-h-[90px] flex justify-center items-center rounded-md overflow-x-auto p-4">
+      <div className="bg-white w-full min-h-[90px] flex justify-center items-center rounded-md overflow-x-auto p-4 relative z-0">
         {loading ? (
           <Hourglass
             visible={true}
@@ -48,7 +48,7 @@ export default function FollowingBar() {
               >
                 <Avatar image={image} highlight={true} />
                 <p className="text-sm text-ellipsis overflow-hidden w-full">
-                  {userName}ddddddd
+                  {userName}
                 </p>
               </Link>
             ))}

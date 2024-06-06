@@ -24,7 +24,9 @@ export default function PostModal({ children, onClose }: Props) {
       >
         <CloseIcon />
       </button>
-      {children}
+      <div className="bg-white w-4/5 h-3/5 max-w-7xl rounded-lg overflow-hidden">
+        {children}
+      </div>
     </section>
   );
 }

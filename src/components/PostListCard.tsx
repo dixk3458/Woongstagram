@@ -10,6 +10,7 @@ import { useState } from 'react';
 import ModalPortal from './ui/ModalPortal';
 import PostModal from './PostModal';
 import PostDetail from './PostDetail';
+import PostUserAvatar from './ui/PostUserAvatar';
 
 type Props = {
   post: SimplePost;
@@ -22,15 +23,7 @@ export default function PostListCard({ post, priority }: Props) {
   const { userImage, userName, image, likes, text, createdAt } = post;
   return (
     <article className="rounded-lg border border-neutral-200 shadow-md overflow-hidden">
-      <div className="flex items-center p-4">
-        <Avatar image={userImage} highlight={true} size="medium" />
-        <Link
-          href={`/user/${userName}`}
-          className="font-bold ml-4 text-gray-800"
-        >
-          {userName}
-        </Link>
-      </div>
+      <PostUserAvatar image={userImage} userName={userName} />
       <Image
         src={image}
         alt={`photo by ${userName}`}
