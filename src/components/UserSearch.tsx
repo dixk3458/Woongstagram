@@ -3,14 +3,17 @@ import { FormEvent, useState } from 'react';
 import useSWR from 'swr';
 import ProgressSpinner from './ui/ProgressSpinner';
 import UserCard from './UserCard';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export default function UserSearch() {
   const [text, setText] = useState('');
+  const debouncedText = useDebounce(text, 1000);
+  
   const {
     data: users,
     isLoading: loading,
     error,
-  } = useSWR<ProfileUser[]>(`/api/search?keyword=${text}`);
+  } = useSWR<ProfileUser[]>(`/api/search?keyword=${debouncedText}`);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
