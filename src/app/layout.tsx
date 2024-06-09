@@ -27,7 +27,7 @@ export default function RootLayout({
               <Navbar />
             </div>
           </header>
-          <main className="flex justify-center py-2">
+          <main className="flex justify-center grow py-2">
             <SWRConfigContext>{children}</SWRConfigContext>
           </main>
         </AuthContext>
