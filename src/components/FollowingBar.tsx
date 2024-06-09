@@ -1,6 +1,6 @@
 'use client';
 
-import { DetailUser } from '@/model/user';
+import { HomeUser } from '@/model/user';
 import Link from 'next/link';
 import useSWR from 'swr';
 import Avatar from './Avatar';
@@ -8,7 +8,7 @@ import { Hourglass } from 'react-loader-spinner';
 import ScrollableBar from './ScrollableBar';
 
 export default function FollowingBar() {
-  const { data, isLoading: loading, error } = useSWR<DetailUser>('/api/me');
+  const { data, isLoading: loading, error } = useSWR<HomeUser>('/api/me');
   const followingUsers = data?.following && [
     ...data.following,
     ...data.following,

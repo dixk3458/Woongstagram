@@ -1,20 +1,24 @@
 // 세션에서 사용할 수 있는 User
-export type User = {
+export type AuthUser = {
   name: string;
   email: string;
   userName: string;
   image?: string;
 };
 
-export type SimpleUser = Pick<User, 'userName' | 'image'>;
+export type SimpleUser = Pick<AuthUser, 'userName' | 'image'>;
 
-export type DetailUser = User & {
+export type HomeUser = AuthUser & {
   following: SimpleUser[];
   followers: SimpleUser[];
   bookmarks: string[];
 };
 
-export type ProfileUser = User & {
+export type SearchUser = AuthUser & {
   following: number;
   followers: number;
+};
+
+export type ProfileUser = SearchUser & {
+  posts: number;
 };

@@ -1,4 +1,4 @@
-import { ProfileUser } from '@/model/user';
+import { SearchUser } from '@/model/user';
 import { FormEvent, useState } from 'react';
 import useSWR from 'swr';
 import ProgressSpinner from './ui/ProgressSpinner';
@@ -8,12 +8,12 @@ import { useDebounce } from '@/hooks/useDebounce';
 export default function UserSearch() {
   const [text, setText] = useState('');
   const debouncedText = useDebounce(text, 1000);
-  
+
   const {
     data: users,
     isLoading: loading,
     error,
-  } = useSWR<ProfileUser[]>(`/api/search?keyword=${debouncedText}`);
+  } = useSWR<SearchUser[]>(`/api/search?keyword=${debouncedText}`);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

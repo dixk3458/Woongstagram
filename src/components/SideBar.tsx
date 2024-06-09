@@ -1,9 +1,9 @@
 import { getServerSession } from 'next-auth';
 import Avatar from './Avatar';
-import { User } from '@/model/user';
+import { AuthUser } from '@/model/user';
 
 type Props = {
-  user: User;
+  user: AuthUser;
 };
 
 export default async function SideBar({
