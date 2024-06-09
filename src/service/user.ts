@@ -33,3 +33,14 @@ export async function getUserByUserName(userName: string) {
     }`
   );
 }
+
+export async function searchUsers(keyword?: string | null) {
+  const query = keyword
+    ? `&& userName match "${keyword}*" || name match "${keyword}*"`
+    : '';
+  return client.fetch(`*[_type == "user" ${query}]{
+      ...,
+      "following":count(following),
+      "followers":count(followers)
+    }`);
+}
