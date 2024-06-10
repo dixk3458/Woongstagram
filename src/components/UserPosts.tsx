@@ -2,29 +2,39 @@
 
 import { ProfileUser } from '@/model/user';
 import { useState } from 'react';
-import useSWR from 'swr';
+import PostIcon from './ui/icon/PostIcon';
+import HeartIcon from './ui/icon/HeartIcon';
+import BookmarkIcon from './ui/icon/BookmarkIcon';
+import PostGrid from './PostGrid';
 
 type Props = {
   user: ProfileUser;
 };
 
-const categories = ['posts', 'liked', 'bookmarks'];
+const tabs = [
+  { type: 'posts', icon: <PostIcon /> },
+  { type: 'liked', icon: <HeartIcon /> },
+  { type: 'bookmarked', icon: <BookmarkIcon /> },
+];
 
 export default function UserPosts({ user }: Props) {
   // 전달받은 user의 userName을 이용해서 해당 사용자의 포스트를 가져와야한다.
   // 사용자가 어떤 category를 선택했는지도 알야아함
-  const [category, setCategory] = useState(categories[0]);
+  const [query, setQuery] = useState(tabs[0].type);
 
   const { userName } = user;
 
-  // 현재 카테고리에 맞게 서비스 요청을해야함
-  const {
-    data: posts,
-    isLoading,
-    error,
-  } = useSWR(`/api/users/${userName}/${category}`);
-
-  console.log(posts);
-
-  return <></>;
+  return (
+    <section>
+      <ul>
+        {tabs.map(({ type, icon }) => (
+          <li key={type} onClick={() => setQuery(type)}>
+            <button>{icon}</button>
+            <span>{type}</span>
+          </li>
+        ))}
+      </ul>
+      <PostGrid userName={userName} query={query} />
+    </section>
+  );
 }
