@@ -42,20 +42,24 @@ export async function getPost(postId: string) {
 }
 
 export async function getPostsOf(userName: string) {
-  return client.fetch(
-    `*[_type == "post" && author->userName == "${userName}"]
+  return client
+    .fetch(
+      `*[_type == "post" && author->userName == "${userName}"]
      | order(_createdAt desc){
       ${simplePostsProjection}
     }`
-  );
+    )
+    .then(posts => mapPosts(posts));
 }
 export async function getLikedPostsOf(userName: string) {
-  return client.fetch(
-    `*[_type == "post" && "${userName}" in likes[]->userName]
+  return client
+    .fetch(
+      `*[_type == "post" && "${userName}" in likes[]->userName]
      | order(_createdAt desc){
       ${simplePostsProjection}
     }`
-  );
+    )
+    .then(posts => mapPosts(posts));
 }
 export async function getBookmarkedPostsOf(userName: string) {
   return client.fetch(
@@ -63,7 +67,7 @@ export async function getBookmarkedPostsOf(userName: string) {
      | order(_createdAt desc){
       ${simplePostsProjection}
     }`
-  );
+  ).then(posts => mapPosts(posts));
 }
 
 function mapPosts(posts: SimplePost[]) {

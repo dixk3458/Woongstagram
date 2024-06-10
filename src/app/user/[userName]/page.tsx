@@ -11,8 +11,12 @@ export default async function UserPage({ params: { userName } }: Context) {
   const user = await getUserForProfile(userName);
   return (
     <section className="w-full flex flex-col items-center">
-      <UserProfile user={user} />
-      <UserPosts user={user} />
+      <div className="w-full border-b border-neutral-300">
+        <UserProfile user={user} />
+      </div>
+      <div className="w-full grow">
+        <UserPosts user={user} />
+      </div>
     </section>
   );
 }

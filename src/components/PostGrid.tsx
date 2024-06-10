@@ -17,13 +17,13 @@ export default function PostGrid({ userName, query }: Props) {
   } = useSWR<SimplePost[]>(`/api/users/${userName}/${query}`);
 
   return (
-    <div>
+    <div className="w-full text-center">
       {loading && <ProgressSpinner />}
       {error && <p>에러...</p>}
       {!loading && !error && posts && posts.length < 1 && (
         <p>포스트가 없습니다.</p>
       )}
-      <ul>
+      <ul className="grid grid-cols-3 gap-4 py-4 px-8">
         {posts &&
           posts.map((post, index) => (
             <li key={post.id}>

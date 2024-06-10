@@ -9,15 +9,15 @@ const ProgressBar = dynamic(
 
 export default function ProgressSpinner() {
   return (
-    <ProgressBar
-      visible={true}
-      height="80"
-      width="80"
-      borderColor="#BEB4FD"
-      barColor="#F1ABDE"
-      ariaLabel="progress-bar-loading"
-      wrapperStyle={{}}
-      wrapperClass=""
-    />
+    <div className="flex justify-center">
+      <ProgressBar
+        visible={true}
+        height="80"
+        width="80"
+        borderColor="#BEB4FD"
+        barColor="#F1ABDE"
+        ariaLabel="progress-bar-loading"
+      />
+    </div>
   );
 }

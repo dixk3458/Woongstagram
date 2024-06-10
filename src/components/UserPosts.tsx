@@ -25,12 +25,18 @@ export default function UserPosts({ user }: Props) {
   const { userName } = user;
 
   return (
-    <section>
-      <ul>
+    <section className="w-full max-w-screen-xl mx-auto">
+      <ul className="flex justify-center uppercase ">
         {tabs.map(({ type, icon }) => (
-          <li key={type} onClick={() => setQuery(type)}>
-            <button>{icon}</button>
-            <span>{type}</span>
+          <li
+            key={type}
+            onClick={() => setQuery(type)}
+            className={`mx-12 p-4 cursor-pointer border-black md:flex items-center ${
+              type === query && 'font-bold border-t'
+            }`}
+          >
+            <button className="scale-150 md:scale-100">{icon}</button>
+            <span className="hidden md:inline">{type}</span>
           </li>
         ))}
       </ul>

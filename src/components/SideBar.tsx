@@ -12,7 +12,7 @@ export default async function SideBar({
   return (
     <>
       <div className="flex items-center">
-        {image && <Avatar image={image} size="normal" highlight={false} />}
+        {image && <Avatar image={image} size="medium" highlight={false} />}
         <div className="ml-4">
           <p className="font-bold">{userName}</p>
           <p className="text-lg text-neutral-500 leading-4">{name}</p>
