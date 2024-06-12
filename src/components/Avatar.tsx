@@ -13,6 +13,7 @@ export default function Avatar({
 }: Props) {
   return (
     <div className={getContainerStyle(size, highlight)}>
+      {/* eslint-disable @next/next/no-img-element  */}
       <img
         className={`rounded-full object-cover bg-white ${
           getImageSizeStyle(size).image

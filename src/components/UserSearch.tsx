@@ -1,3 +1,5 @@
+'use client';
+
 import { SearchUser } from '@/model/user';
 import { FormEvent, useState } from 'react';
 import useSWR from 'swr';

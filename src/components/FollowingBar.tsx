@@ -47,7 +47,7 @@ export default function FollowingBar() {
                 className="flex flex-col items-center w-20"
               >
                 <Avatar image={image} highlight={true} />
-                <p className="text-sm text-ellipsis overflow-hidden w-full">
+                <p className="text-sm text-center text-ellipsis overflow-hidden w-full">
                   {userName}
                 </p>
               </Link>

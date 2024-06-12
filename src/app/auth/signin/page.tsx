@@ -1,11 +1,18 @@
 import Signin from '@/components/Signin';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { getProviders } from 'next-auth/react';
 import { redirect } from 'next/dist/server/api-utils';
 
 type Props = {
   searchParams: { callbackUrl: string };
+};
+
+export const metadata: Metadata = {
+  title: 'Sign in',
+  description:
+    '계정을 만들거나 Woongstagram에 로그인하여 사람들과 관심사를 공유해보세요.',
 };
 
 export default async function SignInPage({

@@ -13,7 +13,6 @@ export default function ActionBar({ likes, userName, text, createdAt }: Props) {
   return (
     <>
       <div className="flex justify-between px-4 py-2">
-        <HeartIcon />
         <BookmarkIcon />
       </div>
       <div className="px-4 py-1">
