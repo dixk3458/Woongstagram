@@ -1,5 +1,6 @@
 // 세션에서 사용할 수 있는 User
 export type AuthUser = {
+  id: string;
   name: string;
   email: string;
   userName: string;

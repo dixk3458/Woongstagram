@@ -21,7 +21,7 @@ export default function PostDetail({ post }: Props) {
     <section className="flex w-full h-full">
       <div className="relative basis-3/5">
         <Image
-        className="object-cover"
+          className="object-cover"
           src={image}
           alt={`photo by ${userName}`}
           sizes="650px"
@@ -51,7 +51,7 @@ export default function PostDetail({ post }: Props) {
               )
             )}
         </ul>
-        <ActionBar userName={userName} createdAt={createdAt} likes={likes} />
+        <ActionBar post={post} />
         <CommentForm />
       </div>
     </section>

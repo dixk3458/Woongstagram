@@ -5,23 +5,39 @@ import { useState } from 'react';
 import ToggleButton from './ui/ToggleButton';
 import HeartFillIcon from './ui/icon/HeartFillIcon';
 import BookmarkFillIcon from './ui/icon/BookmarkFillIcon';
+import { SimplePost } from '@/model/post';
+import { useSession } from 'next-auth/react';
+import { useSWRConfig } from 'swr';
 
 type Props = {
-  likes: string[];
-  userName: string;
-  createdAt: string;
-  text?: string;
+  post: SimplePost;
 };
 
-export default function ActionBar({ likes, userName, text, createdAt }: Props) {
-  const [liked, setLiked] = useState(false);
+export default function ActionBar({ post }: Props) {
+  const { id: postId, likes, userName, text, createdAt } = post;
+  const { data: session } = useSession();
+  const user = session?.user;
+
+  const { mutate } = useSWRConfig();
+
+  const liked = user ? likes.includes(user.userName) : false;
   const [bookmarked, setBookmarked] = useState(false);
+
+  const handleLike = (liked: boolean) => {
+    fetch('/api/like', {
+      method: 'PUT',
+      body: JSON.stringify({
+        postId: postId,
+        liked: liked,
+      }),
+    }).then(() => mutate('/api/posts'));
+  };
   return (
     <>
       <div className="flex justify-between px-4 py-2">
         <ToggleButton
           toggled={liked}
-          onToggle={toggled => setLiked(toggled)}
+          onToggle={liked => handleLike(liked)}
           onIcon={<HeartFillIcon />}
           offIcon={<HeartIcon />}
         />

@@ -62,17 +62,40 @@ export async function getLikedPostsOf(userName: string) {
     .then(posts => mapPosts(posts));
 }
 export async function getBookmarkedPostsOf(userName: string) {
-  return client.fetch(
-    `*[_type == "post" && _id in *[_type == "user" && userName == "${userName}"].bookmarks[]._ref]
+  return client
+    .fetch(
+      `*[_type == "post" && _id in *[_type == "user" && userName == "${userName}"].bookmarks[]._ref]
      | order(_createdAt desc){
       ${simplePostsProjection}
     }`
-  ).then(posts => mapPosts(posts));
+    )
+    .then(posts => mapPosts(posts));
 }
 
 function mapPosts(posts: SimplePost[]) {
   return posts.map((post: SimplePost) => ({
     ...post,
+    likes: post.likes ?? [],
     image: urlFor(post.image),
   }));
+}
+
+export async function likePost(postId: string, userId: string) {
+  return client
+    .patch(postId)
+    .setIfMissing({ likes: [] })
+    .append('likes', [
+      {
+        _ref: userId,
+        _type: 'reference',
+      },
+    ])
+    .commit({ autoGenerateArrayKeys: true });
+}
+
+export async function dislikePost(postId: string, userId: string) {
+  return client
+    .patch(postId)
+    .unset([`likes[_ref == "${userId}"]`])
+    .commit();
 }
