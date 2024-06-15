@@ -8,6 +8,7 @@ import BookmarkFillIcon from './ui/icon/BookmarkFillIcon';
 import { SimplePost } from '@/model/post';
 import { useSession } from 'next-auth/react';
 import { useSWRConfig } from 'swr';
+import usePosts from '@/hooks/usePosts';
 
 type Props = {
   post: SimplePost;
@@ -18,26 +19,24 @@ export default function ActionBar({ post }: Props) {
   const { data: session } = useSession();
   const user = session?.user;
 
-  const { mutate } = useSWRConfig();
-
   const liked = user ? likes.includes(user.userName) : false;
   const [bookmarked, setBookmarked] = useState(false);
 
-  const handleLike = (liked: boolean) => {
-    fetch('/api/like', {
-      method: 'PUT',
-      body: JSON.stringify({
-        postId: postId,
-        liked: liked,
-      }),
-    }).then(() => mutate('/api/posts'));
+  // 내부로직에 대해서 ActionBar 컴포넌트가 많이 알고있다 -> 내부 로직을 처리하는 부분을 따로 커스텀 훅으로 처리해주자.
+  // 재사용성 +, 유지보수성 +
+
+  const { setLike } = usePosts();
+  const handleLike = (like: boolean) => {
+    if (user) {
+      setLike(post, user.userName, like);
+    }
   };
   return (
     <>
       <div className="flex justify-between px-4 py-2">
         <ToggleButton
           toggled={liked}
-          onToggle={liked => handleLike(liked)}
+          onToggle={like => handleLike(like)}
           onIcon={<HeartFillIcon />}
           offIcon={<HeartIcon />}
         />

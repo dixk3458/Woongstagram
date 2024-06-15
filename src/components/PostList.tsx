@@ -4,13 +4,10 @@ import { SimplePost } from '@/model/post';
 import useSWR from 'swr';
 import PostListCard from './PostListCard';
 import ProgressSpinner from './ui/ProgressSpinner';
+import usePosts from '@/hooks/usePosts';
 
 export default function PostList() {
-  const {
-    data: posts,
-    isLoading: loading,
-    error,
-  } = useSWR<SimplePost[]>('/api/posts');
+  const { posts, loading, error } = usePosts();
 
   return (
     <section>
