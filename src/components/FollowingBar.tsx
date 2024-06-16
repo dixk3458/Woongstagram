@@ -6,19 +6,11 @@ import useSWR from 'swr';
 import Avatar from './Avatar';
 import { Hourglass } from 'react-loader-spinner';
 import ScrollableBar from './ScrollableBar';
+import useMe from '@/hooks/useMe';
 
 export default function FollowingBar() {
-  const { data, isLoading: loading, error } = useSWR<HomeUser>('/api/me');
-  const followingUsers = data?.following && [
-    ...data.following,
-    ...data.following,
-    ...data.following,
-    ...data.following,
-    ...data.following,
-    ...data.following,
-    ...data.following,
-    ...data.following,
-  ];
+  const { user, loading, error } = useMe();
+  const followingUsers = user?.following;
 
   return (
     <section className="mb-8 bg-gradient-to-bl from-indigo-300 via-purple-300 to-pink-300 rounded-lg shadow-lg p-[0.2rem]">

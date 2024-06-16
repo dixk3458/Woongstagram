@@ -1,15 +1,7 @@
-import { ProfileUser, SearchUser } from '@/model/user';
+import { AuthUser, ProfileUser, SearchUser } from '@/model/user';
 import { client } from './sanity';
 
-type OAuthUser = {
-  id: string;
-  name: string;
-  userName: string;
-  email: string;
-  image?: string | null;
-};
-
-export async function addUser({ id, name, userName, email, image }: OAuthUser) {
+export async function addUser({ id, name, userName, email, image }: AuthUser) {
   return client.createIfNotExists({
     _id: id,
     _type: 'user',
@@ -72,4 +64,24 @@ export async function getUserForProfile(userName: string) {
       followers: user.followers ?? 0,
       posts: user.posts ?? 0,
     }));
+}
+
+export async function addBookmark(userId: string, postId: string) {
+  return client
+    .patch(userId)
+    .setIfMissing({ bookmarks: [] })
+    .append('bookmarks', [
+      {
+        _ref: postId,
+        _type: 'reference',
+      },
+    ])
+    .commit({ autoGenerateArrayKeys: true });
+}
+
+export async function removeBookmark(userId: string, postId: string) {
+  return client
+    .patch(userId)
+    .unset([`bookmarks[_ref == "${postId}"]`])
+    .commit();
 }

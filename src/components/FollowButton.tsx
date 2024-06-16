@@ -3,6 +3,7 @@
 import { HomeUser, ProfileUser } from '@/model/user';
 import useSWR from 'swr';
 import Button from './ui/Button';
+import useMe from '@/hooks/useMe';
 
 type Props = {
   user: ProfileUser;
@@ -14,7 +15,7 @@ export default function FollowButton({ user }: Props) {
   // 그리고 인터렉션이 있음으로 client
   const { userName } = user;
 
-  const { data: loggedInUser, isLoading, error } = useSWR<HomeUser>('/api/me');
+  const { user: loggedInUser } = useMe();
 
   const showButton = loggedInUser && loggedInUser.userName !== userName;
 
