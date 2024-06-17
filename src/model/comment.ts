@@ -1,5 +1,5 @@
 export type Comment = {
   userName: string;
-  userImage: string;
+  userImage?: string;
   comment: string;
 };

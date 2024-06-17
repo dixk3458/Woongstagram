@@ -1,21 +1,23 @@
 import HeartIcon from './ui/icon/HeartIcon';
 import BookmarkIcon from './ui/icon/BookmarkIcon';
 import { parseDate } from '@/util/date';
-import { useState } from 'react';
 import ToggleButton from './ui/ToggleButton';
 import HeartFillIcon from './ui/icon/HeartFillIcon';
 import BookmarkFillIcon from './ui/icon/BookmarkFillIcon';
 import { SimplePost } from '@/model/post';
 import { useSession } from 'next-auth/react';
-import { useSWRConfig } from 'swr';
 import usePosts from '@/hooks/usePosts';
 import useMe from '@/hooks/useMe';
+import CommentForm from './CommentForm';
+import { Comment } from '@/model/comment';
 
 type Props = {
   post: SimplePost;
+  children?: React.ReactNode;
+  onComment: (comment: Comment) => void;
 };
 
-export default function ActionBar({ post }: Props) {
+export default function ActionBar({ post, children, onComment }: Props) {
   const { id: postId, likes, userName, text, createdAt } = post;
   const { data: session } = useSession();
   const { user, loading, error, setBookmark } = useMe();
@@ -38,6 +40,15 @@ export default function ActionBar({ post }: Props) {
       setBookmark(postId, bookmark);
     }
   };
+
+  const handleComment = (text: string) => {
+    user &&
+      onComment({
+        comment: text,
+        userName: user.userName,
+        userImage: user.image,
+      });
+  };
   return (
     <>
       <div className="flex justify-between px-4 py-2">
@@ -58,14 +69,10 @@ export default function ActionBar({ post }: Props) {
         <p className="font-bold mb-1">{`${likes?.length ?? 0} ${
           likes?.length > 1 ? 'Likes' : 'Like'
         }`}</p>
-        {text && (
-          <p>
-            <span className="font-bold mr-2 mb-1">{userName}</span>
-            {text}
-          </p>
-        )}
+        {children}
         <p className="text-neutral-400 mb-1">{parseDate(createdAt)}</p>
       </div>
+      <CommentForm onPostComment={text => handleComment(text)} />
     </>
   );
 }
