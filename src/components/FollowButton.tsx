@@ -15,7 +15,7 @@ export default function FollowButton({ user }: Props) {
   // 그리고 인터렉션이 있음으로 client
   const { userName } = user;
 
-  const { user: loggedInUser } = useMe();
+  const { user: loggedInUser, toggleFollow } = useMe();
 
   const showButton = loggedInUser && loggedInUser.userName !== userName;
 
@@ -25,10 +25,18 @@ export default function FollowButton({ user }: Props) {
 
   const text = isFollowing ? 'Unfollow' : 'Follow';
 
+  const handleFollow = () => {
+    toggleFollow(user.id, !isFollowing);
+  };
+
   return (
     <>
       {showButton && (
-        <Button text={text} onClick={() => {}} red={text === 'Unfollow'} />
+        <Button
+          text={text}
+          onClick={() => handleFollow()}
+          red={text === 'Unfollow'}
+        />
       )}
     </>
   );
