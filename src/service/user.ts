@@ -53,10 +53,14 @@ export async function getUserForProfile(userName: string) {
     .fetch(
       `*[_type == "user" && userName == "${userName}"][0]{
       ...,
+      "id":_id,
+      "createdAt":_createdAt,
       "following":count(following),
       "followers":count(followers),
       "posts":count(*[_type == "post" && author->userName == "${userName}"])
-    }`
+    }`,
+      undefined,
+      { cache: 'no-store' }
     )
     .then(user => ({
       ...user,

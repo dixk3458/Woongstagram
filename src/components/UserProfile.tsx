@@ -13,6 +13,7 @@ export default function UserProfile({ user }: Props) {
     { title: 'followers', data: followers },
     { title: 'following', data: following },
   ];
+
   return (
     <section className="w-full max-w-screen-xl mx-auto flex flex-col md:flex-row items-center justify-center py-12">
       <Avatar image={image} highlight={true} size="xlarge" />
