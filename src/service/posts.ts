@@ -54,8 +54,7 @@ export async function getPostsOf(userName: string) {
 export async function getLikedPostsOf(userName: string) {
   return client
     .fetch(
-      `*[_type == "post" && "${userName}" in likes[]->userName]
-     | order(_createdAt desc){
+      `*[_type == "post" && "${userName}" in likes[]->userName] | order(_createdAt desc){
       ${simplePostsProjection}
     }`
     )
@@ -64,8 +63,7 @@ export async function getLikedPostsOf(userName: string) {
 export async function getBookmarkedPostsOf(userName: string) {
   return client
     .fetch(
-      `*[_type == "post" && _id in *[_type == "user" && userName == "${userName}"].bookmarks[]._ref]
-     | order(_createdAt desc){
+      `*[_type == "post" && _id in *[_type == "user" && userName == "${userName}"].bookmarks[]._ref] | order(_createdAt desc){
       ${simplePostsProjection}
     }`
     )

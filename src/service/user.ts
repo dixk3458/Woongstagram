@@ -60,7 +60,7 @@ export async function getUserForProfile(userName: string) {
       "posts":count(*[_type == "post" && author->userName == "${userName}"])
     }`,
       undefined,
-      { cache: 'no-store' }
+      { next: { tags: [`profile/${userName}`] } }
     )
     .then(user => ({
       ...user,

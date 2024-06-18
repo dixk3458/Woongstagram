@@ -7,6 +7,7 @@ import useMe from '@/hooks/useMe';
 import { useState, useTransition } from 'react';
 import { ThreeDots } from 'react-loader-spinner';
 import { useRouter } from 'next/navigation';
+import revalidateProfileUser from '@/actions/action';
 
 type Props = {
   user: ProfileUser;
@@ -36,9 +37,10 @@ export default function FollowButton({ user }: Props) {
     setIsFetching(true);
     await toggleFollow(targetId, !isFollowing);
     setIsFetching(false);
-    startTransition(() => {
-      router.refresh();
-    });
+    revalidateProfileUser(userName);
+    // startTransition(() => {
+    //   router.refresh();
+    // });
   };
 
   return (
