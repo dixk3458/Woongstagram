@@ -1,7 +1,7 @@
 type Props = {
   text: string;
   onClick: () => void;
-  red: boolean;
+  red?: boolean;
   disabled?: boolean;
 };
 
@@ -15,7 +15,7 @@ export default function Button({
     <button
       disabled={disabled}
       onClick={() => onClick()}
-      className={`px-6 py-2 text-white font-bold rounded-md border-none ${
+      className={`w-full px-6 py-2 text-white font-bold rounded-md border-none ${
         red ? 'bg-red-500' : 'bg-blue-500'
       } ${disabled && 'opacity-80'}`}
     >

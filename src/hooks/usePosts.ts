@@ -30,8 +30,6 @@ export default function usePosts() {
     mutate,
   } = useSWR<SimplePost[]>(cacheKeys.postKey);
 
-  console.log(cacheKeys);
-
   const setLike = useCallback(
     (post: SimplePost, userName: string, like: boolean) => {
       const newPost = {
