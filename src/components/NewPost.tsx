@@ -4,8 +4,10 @@ import { AuthUser } from '@/model/user';
 import PostUserAvatar from './ui/PostUserAvatar';
 import FileIcon from './ui/icon/FileIcon';
 import Button from './ui/Button';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import Image from 'next/image';
+import ProgressSpinner from './ui/ProgressSpinner';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   user: AuthUser;
@@ -15,13 +17,18 @@ export default function NewPost({ user }: Props) {
   const { image, userName } = user;
   const [dragging, setDragging] = useState(false);
   const [file, setFile] = useState<File>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>();
+  const [text, setText] = useState('');
+
+  const router = useRouter();
 
   const handleDrag = (e: React.DragEvent<HTMLLabelElement>) => {
     const dragType = e.type;
 
     if (dragType === 'dragenter') {
       setDragging(true);
-    } else {
+    } else if (dragType === 'dragleave') {
       setDragging(false);
     }
   };
@@ -47,10 +54,52 @@ export default function NewPost({ user }: Props) {
       setFile(files[0]);
     }
   };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (!file) {
+      return;
+    }
+
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('text', text);
+
+    fetch('/api/newPost', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(res => {
+        if (!res.ok) {
+          setError(`${res.status} ${res.statusText}`);
+          return;
+        }
+        router.push('/');
+      })
+      .catch(error => setError(error.toString()))
+      .finally(() => {
+        setLoading(false);
+        setTimeout(() => {
+          setError('');
+        }, 3000);
+      });
+  };
   return (
     <section className="w-full flex flex-col items-center">
+      {loading && (
+        <div className="absolute inset-0 z-20 bg-neutral-500/20 flex flex-col justify-center items-center">
+          <ProgressSpinner />
+        </div>
+      )}
       <PostUserAvatar image={image ?? ''} userName={userName} />
-      <form className="w-full flex flex-col items-center">
+      {error && <p className="text-red-600 font-bold p-2">{error}</p>}
+      <form
+        className="w-full flex flex-col items-center mt-2"
+        onSubmit={e => handleSubmit(e)}
+      >
         <input
           type="file"
           name="input"
@@ -79,9 +128,9 @@ export default function NewPost({ user }: Props) {
             </div>
           )}
           {file && (
-            <div className="relative w-full aspect-square">
+            <div className="relative w-full aspect-square border-neutral-300">
               <Image
-                className="object-cover"
+                className="object-contain border "
                 src={URL.createObjectURL(file)}
                 alt="local file"
                 fill
@@ -97,6 +146,8 @@ export default function NewPost({ user }: Props) {
           rows={6}
           required
           placeholder="Write a caption..."
+          value={text}
+          onChange={e => setText(e.target.value)}
         />
         <Button onClick={() => {}} text="Publish" />
       </form>
