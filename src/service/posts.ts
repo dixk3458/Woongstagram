@@ -1,5 +1,6 @@
 import { SimplePost } from '@/model/post';
 import { client, urlFor } from './sanity';
+import { createReadStream } from 'fs';
 
 const simplePostsProjection = `
 ...,
@@ -111,4 +112,24 @@ export async function addComment(postId: string, userId: string, text: string) {
       },
     ])
     .commit({ autoGenerateArrayKeys: true });
+}
+
+export async function createNewPost(userId: string, text: string, file: Blob) {
+  return client.assets.upload('image', file).then(imageAsset => {
+    return client.create(
+      {
+        _type: 'post',
+        author: { _ref: userId, _type: 'reference' },
+        photo: { asset: { _ref: imageAsset._id } },
+        comments: [
+          {
+            text: text,
+            author: { _ref: userId, _type: 'reference' },
+          },
+        ],
+        likes: [],
+      },
+      { autoGenerateArrayKeys: true }
+    );
+  });
 }

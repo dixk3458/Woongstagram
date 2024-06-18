@@ -4,10 +4,11 @@ import { AuthUser } from '@/model/user';
 import PostUserAvatar from './ui/PostUserAvatar';
 import FileIcon from './ui/icon/FileIcon';
 import Button from './ui/Button';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useRef, useState } from 'react';
 import Image from 'next/image';
 import ProgressSpinner from './ui/ProgressSpinner';
 import { useRouter } from 'next/navigation';
+import revalidateProfileUser from '@/actions/action';
 
 type Props = {
   user: AuthUser;
@@ -19,7 +20,7 @@ export default function NewPost({ user }: Props) {
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
-  const [text, setText] = useState('');
+  const textRef = useRef<HTMLTextAreaElement>(null);
 
   const router = useRouter();
 
@@ -66,7 +67,7 @@ export default function NewPost({ user }: Props) {
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('text', text);
+    formData.append('text', textRef.current?.value ?? '');
 
     fetch('/api/newPost', {
       method: 'POST',
@@ -77,14 +78,16 @@ export default function NewPost({ user }: Props) {
           setError(`${res.status} ${res.statusText}`);
           return;
         }
+        revalidateProfileUser(user.userName);
         router.push('/');
       })
       .catch(error => setError(error.toString()))
       .finally(() => {
         setLoading(false);
-        setTimeout(() => {
-          setError('');
-        }, 3000);
+        error &&
+          setTimeout(() => {
+            setError('');
+          }, 3000);
       });
   };
   return (
@@ -146,8 +149,7 @@ export default function NewPost({ user }: Props) {
           rows={6}
           required
           placeholder="Write a caption..."
-          value={text}
-          onChange={e => setText(e.target.value)}
+          ref={textRef}
         />
         <Button onClick={() => {}} text="Publish" />
       </form>

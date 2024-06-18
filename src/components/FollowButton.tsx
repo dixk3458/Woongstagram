@@ -38,6 +38,7 @@ export default function FollowButton({ user }: Props) {
     await toggleFollow(targetId, !isFollowing);
     setIsFetching(false);
     revalidateProfileUser(userName);
+    loggedInUser && revalidateProfileUser(loggedInUser.userName);
     // startTransition(() => {
     //   router.refresh();
     // });
