@@ -4,14 +4,8 @@ import { SimplePost } from '@/model/post';
 import PostGridCard from './PostGridCard';
 import usePosts from '@/hooks/usePosts';
 
-type Props = {
-  userName: string;
-  query: string;
-};
-
-export default function PostGrid({ userName, query }: Props) {
-  const cacheKey = `/api/users/${userName}/${query}`;
-  const { posts, loading, error } = usePosts(cacheKey);
+export default function PostGrid() {
+  const { posts, loading, error } = usePosts();
 
   return (
     <div className="w-full text-center">
@@ -24,11 +18,7 @@ export default function PostGrid({ userName, query }: Props) {
         {posts &&
           posts.map((post, index) => (
             <li key={post.id}>
-              <PostGridCard
-                post={post}
-                priority={index < 6}
-                cacheKey={cacheKey}
-              />
+              <PostGridCard post={post} priority={index < 6} />
             </li>
           ))}
       </ul>
