@@ -8,9 +8,10 @@ import useFullPost from '@/hooks/useFullPost';
 
 type Props = {
   post: SimplePost;
+  cacheKey?: string;
 };
 
-export default function PostDetail({ post }: Props) {
+export default function PostDetail({ post, cacheKey }: Props) {
   const { id, createdAt, userName, userImage, image, text, likes } = post;
   const { post: fullPost, postComment } = useFullPost(id);
 
@@ -50,7 +51,7 @@ export default function PostDetail({ post }: Props) {
               )
             )}
         </ul>
-        <ActionBar post={post} onComment={postComment} />
+        <ActionBar post={post} onComment={postComment} cacheKey={cacheKey} />
       </div>
     </section>
   );

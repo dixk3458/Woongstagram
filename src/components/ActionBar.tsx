@@ -15,11 +15,16 @@ type Props = {
   post: SimplePost;
   children?: React.ReactNode;
   onComment: (comment: Comment) => void;
+  cacheKey?: string;
 };
 
-export default function ActionBar({ post, children, onComment }: Props) {
+export default function ActionBar({
+  post,
+  children,
+  onComment,
+  cacheKey,
+}: Props) {
   const { id: postId, likes, userName, text, createdAt } = post;
-  const { data: session } = useSession();
   const { user, loading, error, setBookmark } = useMe();
 
   const liked = user ? likes.includes(user.userName) : false;
@@ -28,7 +33,7 @@ export default function ActionBar({ post, children, onComment }: Props) {
   // 내부로직에 대해서 ActionBar 컴포넌트가 많이 알고있다 -> 내부 로직을 처리하는 부분을 따로 커스텀 훅으로 처리해주자.
   // 재사용성 +, 유지보수성 +
 
-  const { setLike } = usePosts();
+  const { setLike } = usePosts(cacheKey);
   const handleLike = (like: boolean) => {
     if (user) {
       setLike(post, user.userName, like);

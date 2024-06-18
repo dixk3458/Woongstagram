@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import ProgressSpinner from './ui/ProgressSpinner';
 import { SimplePost } from '@/model/post';
 import PostGridCard from './PostGridCard';
+import usePosts from '@/hooks/usePosts';
 
 type Props = {
   userName: string;
@@ -9,12 +10,8 @@ type Props = {
 };
 
 export default function PostGrid({ userName, query }: Props) {
-  // 현재 카테고리에 맞게 서비스 요청을해야함
-  const {
-    data: posts,
-    isLoading: loading,
-    error,
-  } = useSWR<SimplePost[]>(`/api/users/${userName}/${query}`);
+  const cacheKey = `/api/users/${userName}/${query}`;
+  const { posts, loading, error } = usePosts(cacheKey);
 
   return (
     <div className="w-full text-center">
@@ -27,7 +24,11 @@ export default function PostGrid({ userName, query }: Props) {
         {posts &&
           posts.map((post, index) => (
             <li key={post.id}>
-              <PostGridCard post={post} priority={index < 6} />
+              <PostGridCard
+                post={post}
+                priority={index < 6}
+                cacheKey={cacheKey}
+              />
             </li>
           ))}
       </ul>

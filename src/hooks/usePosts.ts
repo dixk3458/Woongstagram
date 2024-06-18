@@ -20,13 +20,13 @@ async function addComment(postId: string, text: string) {
   }).then(res => res.json());
 }
 
-export default function usePosts() {
+export default function usePosts(cacheKey: string = '/api/posts') {
   const {
     data: posts,
     isLoading: loading,
     error,
     mutate,
-  } = useSWR<SimplePost[]>('/api/posts');
+  } = useSWR<SimplePost[]>(cacheKey);
 
   const setLike = useCallback(
     (post: SimplePost, userName: string, like: boolean) => {

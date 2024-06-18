@@ -44,8 +44,7 @@ export async function getPost(postId: string) {
 export async function getPostsOf(userName: string) {
   return client
     .fetch(
-      `*[_type == "post" && author->userName == "${userName}"]
-     | order(_createdAt desc){
+      `*[_type == "post" && author->userName == "${userName}"] | order(_createdAt desc){
       ${simplePostsProjection}
     }`
     )
