@@ -13,9 +13,9 @@ type Props = {
 };
 
 const tabs = [
-  { type: 'posts', icon: <PostIcon /> },
-  { type: 'liked', icon: <HeartIcon /> },
-  { type: 'bookmarked', icon: <BookmarkIcon /> },
+  { type: 'posts', icon: <PostIcon />, title: 'User posts' },
+  { type: 'liked', icon: <HeartIcon />, title: 'Liked posts' },
+  { type: 'bookmarked', icon: <BookmarkIcon />, title: 'Bookmarked posts' },
 ];
 
 export default function UserPosts({ user }: Props) {
@@ -28,7 +28,7 @@ export default function UserPosts({ user }: Props) {
   return (
     <section className="w-full max-w-screen-xl mx-auto">
       <ul className="flex justify-center uppercase ">
-        {tabs.map(({ type, icon }) => (
+        {tabs.map(({ type, icon, title }) => (
           <li
             key={type}
             onClick={() => setQuery(type)}
@@ -36,7 +36,9 @@ export default function UserPosts({ user }: Props) {
               type === query && 'font-bold border-t'
             }`}
           >
-            <button className="scale-150 md:scale-100">{icon}</button>
+            <button className="scale-150 md:scale-100" aria-label={title}>
+              {icon}
+            </button>
             <span className="hidden md:inline">{type}</span>
           </li>
         ))}
