@@ -15,7 +15,7 @@ export default function Signin({ providers, callbackUrl }: Props) {
           key={id}
           text={`Sign in with ${name}`}
           onClick={() =>
-            signIn(id, { callbackUrl: callbackUrl, prompt: 'select_account' })
+            signIn(id, { callbackUrl: callbackUrl }, { prompt: 'login' })
           }
           size="big"
         />
