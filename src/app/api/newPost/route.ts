@@ -1,26 +1,22 @@
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { createNewPost } from '@/service/posts';
+import withSessionUser from '@/util/session';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  const user = session?.user;
+  return withSessionUser(async user => {
+    const formData = await req.formData();
 
-  if (!user) {
-    return new Response('Authentication error', { status: 401 });
-  }
+    const text = formData.get('text') as string;
+    const file = formData.get('file') as Blob;
 
-  const formData = await req.formData();
+    if (!text || !file) {
+      return new Response('Bad request', { status: 400 });
+    }
 
-  const text = formData.get('text') as string;
-  const file = formData.get('file') as Blob;
-
-  if (!text || !file) {
-    return new Response('Bad request', { status: 400 });
-  }
-
-  return createNewPost(user.id, text, file)
-    .then(res => NextResponse.json(res))
-    .catch(error => new Response(JSON.stringify(error), { status: 500 }));
+    return createNewPost(user.id, text, file)
+      .then(res => NextResponse.json(res))
+      .catch(error => new Response(JSON.stringify(error), { status: 500 }));
+  });
 }

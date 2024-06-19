@@ -1,5 +1,6 @@
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import { getPost } from '@/service/posts';
+import withSessionUser from '@/util/session';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -8,15 +9,9 @@ type Context = {
 };
 
 export async function GET(_: NextRequest, context: Context) {
-  const session = await getServerSession(authOptions);
+  return withSessionUser(async () => {
+    const postId = context.params.id;
 
-  const user = session?.user;
-
-  if (!user) {
-    return new Response('Authentication Error', { status: 401 });
-  }
-
-  const postId = context.params.id;
-
-  return getPost(postId).then(res => NextResponse.json(res));
+    return getPost(postId).then(res => NextResponse.json(res));
+  });
 }
