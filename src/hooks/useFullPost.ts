@@ -1,13 +1,12 @@
 import { Comment } from '@/model/comment';
 import { FullPost } from '@/model/post';
+import axios from 'axios';
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
-function addComment(postId: string, text: string) {
-  return fetch('/api/comment', {
-    method: 'POST',
-    body: JSON.stringify({ postId: postId, text: text }),
-  }).then(res => res.json());
+async function addComment(postId: string, text: string) {
+  const res = await axios.post('/api/comment', { postId: postId, text: text });
+  return res.data;
 }
 
 export default function useFullPost(postId: string) {

@@ -1,24 +1,20 @@
 import { useCacheKeys } from '@/context/CacheKeysContext';
 import { Comment } from '@/model/comment';
 import { SimplePost } from '@/model/post';
+import axios from 'axios';
 import { useCallback } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
 async function updateLike(postId: string, like: boolean) {
-  return fetch('/api/like', {
-    method: 'PUT',
-    body: JSON.stringify({
-      postId: postId,
-      liked: like,
-    }),
-  }).then(res => res.json());
+  return axios
+    .put('/api/like', { postId: postId, liked: like })
+    .then(res => res.data);
 }
 
 async function addComment(postId: string, text: string) {
-  return fetch('/api/comment', {
-    method: 'POST',
-    body: JSON.stringify({ postId: postId, text: text }),
-  }).then(res => res.json());
+  return axios
+    .post('/api/comment', { postId: postId, text: text })
+    .then(res => res.data);
 }
 
 export default function usePosts() {

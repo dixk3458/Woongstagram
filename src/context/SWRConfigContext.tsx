@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import { SWRConfig } from 'swr';
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 export default function SWRConfigContext({ children }: Props) {
   return (
     <SWRConfig
-      value={{ fetcher: (url: string) => fetch(url).then(res => res.json()) }}
+      value={{ fetcher: (url: string) => axios(url).then(res => res.data) }}
     >
       {children}
     </SWRConfig>

@@ -1,19 +1,18 @@
 import { HomeUser } from '@/model/user';
+import axios from 'axios';
 import { useCallback } from 'react';
 import useSWR from 'swr';
 
 async function updateBookmark(postId: string, bookmark: boolean) {
-  return fetch('/api/bookmark', {
-    method: 'PUT',
-    body: JSON.stringify({ postId: postId, bookmark: bookmark }),
-  }).then(res => res.json());
+  return axios
+    .put('/api/bookmark', { postId: postId, bookmark: bookmark })
+    .then(res => res.data);
 }
 
 async function updateFollow(targetId: string, follow: boolean) {
-  return fetch('/api/follow', {
-    method: 'PUT',
-    body: JSON.stringify({ targetId: targetId, follow: follow }),
-  }).then(res => res.json());
+  return axios
+    .put('/api/follow', { targetId: targetId, follow: follow })
+    .then(res => res.data);
 }
 
 export default function useMe() {
